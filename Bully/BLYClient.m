@@ -64,7 +64,7 @@
 
 
 - (void)connect {
-	if (self.webSocket) {
+	if ([self isConnected]) {
 		return;
 	}
 	
@@ -80,11 +80,20 @@
 
 
 - (void)disconnect {
+	if (![self isConnected]) {
+		return;
+	}
+	
 	self.webSocket = nil;
 	if ([self.delegate respondsToSelector:@selector(bullyClientDidDisconnect:)]) {
 		[self.delegate bullyClientDidDisconnect:self];
 	}
 	self.socketID = nil;
+}
+
+
+- (BOOL)isConnected {
+	return self.webSocket != nil;
 }
 
 
