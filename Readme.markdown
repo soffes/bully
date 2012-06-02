@@ -1,16 +1,25 @@
 # Bully
 
-Simple Pusher Objective-C client.
+Bully is a simple [Pusher](http://pusher.com) Objective-C client with some neat stuff.
 
 **Note:** This is a work in progress. Presence channels aren't supported yet. Proceed with caution.
 
+## Neat Stuff
+
+Bully keeps track of all of your subscribed channels and bound events. If you disconnect (when your app enters the background, loses reachability, or whatever) and then reconnect, Bully will automatically resubscribe to all of your channels and bind your events.
+
+Bully is really simple. It's not even 300 lines of code. Since you can use it without CocoaPods, you can add it as a subproject to allow for easy debugging. You can of course use it with CocoaPods if that's more your style too.
+
+
 ## Example Usage
 
-#### Create the client
+#### Creating a client
 
 ``` objective-c
 BLYClient *client = [[BLYClient alloc] initWithAppKey:@"YOUR_PUSHER_KEY" delegate:self];
 ```
+
+It is recommended that you set your client to an instance variable so it stays around and keeps its connection to Pusher open.
 
 #### Subscribe to a channel
 
