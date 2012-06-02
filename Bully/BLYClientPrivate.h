@@ -8,18 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import <SocketRocket/SRWebSocket.h>
+#import "BLYClient.h"
 
 @class BLYChannel;
 
 @interface BLYClient () <SRWebSocketDelegate>
 
 @property (nonatomic, strong, readwrite) NSString *socketID;
+@property (nonatomic, weak, readwrite) id<BLYClientDelegate> delegate;
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *appKey;
 @property (nonatomic, strong) NSMutableDictionary *connectedChannels;
 
 - (void)_sendEvent:(NSString *)eventName dictionary:(NSDictionary *)dictionary;
 - (void)_reconnectChannels;
-- (void)_unsubscribeChannel:(BLYChannel *)channel;
+- (void)_removeChannel:(BLYChannel *)channel;
 
 @end

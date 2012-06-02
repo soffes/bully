@@ -7,23 +7,34 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BLYChannel.h"
 
-typedef void (^BLYChannelEventBlock)(id message);
-
-@class BLYChannel;
+@protocol BLYClientDelegate;
 
 @interface BLYClient : NSObject
 
 @property (nonatomic, strong, readonly) NSString *socketID;
+@property (nonatomic, weak, readonly) id<BLYClientDelegate> delegate;
 
 + (NSString *)version;
 
-- (id)initWithAppKey:(NSString *)appKey;
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate;
 
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;
-//- (void)bindToEvent:(NSString *)eventName block:(BLYChannelEventBlock)block;
+- (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock;
 
 - (void)connect;
 - (void)disconnect;
+
+@end
+
+
+@protocol BLYClientDelegate <NSObject>
+
+@optional
+
+- (void)bullyClientDidConnect:(BLYClient *)client;
+- (void)bullyClient:(BLYClient *)client didReceiveError:(NSError *)error;
+- (void)bullyClientDidDisconnect:(BLYClient *)client;
 
 @end

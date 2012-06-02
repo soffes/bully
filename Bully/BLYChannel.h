@@ -7,11 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BLYClient.h"
+
+@class BLYClient;
+@class BLYChannel;
+
+typedef void (^BLYChannelEventBlock)(id message);
+typedef void (^BLYChannelAuthenticationBlock)(BLYChannel *channel);
 
 @interface BLYChannel : NSObject
 
 @property (nonatomic, strong, readonly) NSString *name;
+@property (nonatomic, weak, readonly) BLYClient *client;
+@property (nonatomic, copy) BLYChannelAuthenticationBlock authenticationBlock;
+
+- (BOOL)isPrivate;
+
+- (void)subscribeWithAuthentication:(NSDictionary *)authentication;
 
 - (void)bindToEvent:(NSString *)eventName block:(BLYChannelEventBlock)block;
 - (void)unbindEvent:(NSString *)eventName;

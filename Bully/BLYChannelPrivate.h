@@ -12,10 +12,11 @@
 
 @interface BLYChannel ()
 
-@property (nonatomic, weak) BLYClient *client;
+@property (nonatomic, weak, readwrite) BLYClient *client;
 @property (nonatomic, strong, readwrite) NSString *name;
 @property (nonatomic, strong) NSMutableDictionary *subscriptions;
 
-- (id)initWithName:(NSString *)name;
+- (id)initWithName:(NSString *)name client:(BLYClient *)client authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock;
+- (void)subscribe;
 
 @end

@@ -14,6 +14,7 @@
 @implementation BLYClient
 
 @synthesize socketID = _socketID;
+@synthesize delegate = _delegate;
 @synthesize webSocket = _webSocket;
 @synthesize appKey = _appKey;
 @synthesize connectedChannels = _connectedChannels;
@@ -34,9 +35,10 @@
 }
 
 
-- (id)initWithAppKey:(NSString *)appKey {
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate {
 	if ((self = [super init])) {
 		self.appKey = appKey;
+		self.delegate = delegate;
 		[self connect];
 	}
 	return self;
@@ -44,17 +46,18 @@
 
 
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName {
+	return [self subscribeToChannelWithName:channelName authenticationBlock:nil];
+}
+
+
+- (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock {
 	BLYChannel *channel = [_connectedChannels objectForKey:channelName];
 	if (channel) {
 		return channel;
 	}
 
-	[self _sendEvent:@"pusher:subscribe" dictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
-													 channelName, @"channel",
-													 nil]];
-
-	channel = [[BLYChannel alloc] initWithName:channelName];
-	channel.client = self;
+	channel = [[BLYChannel alloc] initWithName:channelName client:self authenticationBlock:authenticationBlock];
+	[channel subscribe];
 	[_connectedChannels setObject:channel forKey:channelName];
 	return channel;
 }
@@ -94,21 +97,17 @@
 
 - (void)_reconnectChannels {
 	for (NSString *channelName in self.connectedChannels) {
-		[self _sendEvent:@"pusher:subscribe" dictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
-														 channelName, @"channel",
-														 nil]];
+		BLYChannel *channel = [self.connectedChannels objectForKey:channelName];
+		[channel subscribe];
 	}
 }
 
 
-- (void)_unsubscribeChannel:(BLYChannel *)channel {
+- (void)_removeChannel:(BLYChannel *)channel {
 	if (!channel) {
 		return;
 	}
 	
-	[self _sendEvent:@"pusher:unsubscribe" dictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
-													 channel.name, @"channel",
-													 nil]];
 	[self.connectedChannels removeObjectForKey:channel.name];
 }
 
@@ -121,14 +120,25 @@
 
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)messageString {
+	NSLog(@"webSocket:didReceiveMessage: %@", messageString);
+	
 	NSData *messageData = [(NSString *)messageString dataUsingEncoding:NSUTF8StringEncoding];
 	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:0 error:nil];
 
-	// Get event name out of Pusher message
+	// Get event out of Pusher message
 	NSString *eventName = [message objectForKey:@"event"];
+	id eventMessage = [message objectForKey:@"data"];
+	if (eventMessage && [eventMessage isKindOfClass:[NSString class]]) {
+		NSData *eventMessageData = [eventMessage dataUsingEncoding:NSUTF8StringEncoding];
+		eventMessage = [NSJSONSerialization JSONObjectWithData:eventMessageData options:0 error:nil];
+	}
 
 	// Check for pusher:connect_established
 	if ([eventName isEqualToString:@"pusher:connection_established"]) {
+		self.socketID = [eventMessage objectForKey:@"socket_id"];
+		if ([self.delegate respondsToSelector:@selector(bullyClientDidConnect:)]) {
+			[self.delegate bullyClientDidConnect:self];
+		}
 		[self _reconnectChannels];
 		return;
 	}
@@ -145,20 +155,22 @@
 			BLYChannelEventBlock block = [channel.subscriptions objectForKey:eventName];
 			if (block) {
 				// Call their block with the event data
-				block([message objectForKey:@"data"]);
+				block(eventMessage);
 			}
 		}
 	}
 }
 
 
-//- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
+- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
 //	NSLog(@"webSocket:didFailWithError: %@", error);
-//}
-//
-//
-//- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
+	self.webSocket = nil;
+}
+
+
+- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
 //	NSLog(@"webSocket:didCloseWithCode: %i reason: %@ wasClean: %i", code, reason, wasClean);
-//}
+	self.webSocket = nil;
+}
 
 @end

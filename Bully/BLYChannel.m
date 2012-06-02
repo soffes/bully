@@ -12,14 +12,16 @@
 
 @implementation BLYChannel
 
-@synthesize client;
-
+@synthesize client = _client;
 @synthesize name = _name;
 @synthesize subscriptions = _subscriptions;
+@synthesize authenticationBlock = _authenticationBlock;
 
-- (id)initWithName:(NSString *)name {
+- (id)initWithName:(NSString *)name client:(BLYClient *)client  authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock {
 	if ((self = [super init])) {
 		self.name = name;
+		self.client = client;
+		self.authenticationBlock = authenticationBlock;
 		self.subscriptions = [[NSMutableDictionary alloc] init];
 	}
 	return self;
@@ -37,7 +39,42 @@
 
 
 - (void)unsubscribe {
-	[self.client _unsubscribeChannel:self];
+	NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+								self.name, @"channel",
+								nil];
+	[self.client _sendEvent:@"pusher:unsubscribe" dictionary:dictionary];
+	[self.client _removeChannel:self];
+}
+
+
+- (BOOL)isPrivate {
+	return [self.name hasPrefix:@"private-"];
+}
+
+- (void)subscribe; {
+	if ([self isPrivate]) {
+		if (self.authenticationBlock) {
+			self.authenticationBlock(self);
+		}
+		return;
+	}
+
+	[self subscribeWithAuthentication:nil];
+}
+
+- (void)subscribeWithAuthentication:(NSDictionary *)authentication {
+	NSDictionary *dictionary = nil;
+	if (authentication) {
+		dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+					  self.name, @"channel",
+					  [authentication objectForKey:@"auth"], @"auth",
+					  nil];
+	} else {
+		dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+					  self.name, @"channel",
+					  nil];
+	}
+	[self.client _sendEvent:@"pusher:subscribe" dictionary:dictionary];
 }
 
 @end

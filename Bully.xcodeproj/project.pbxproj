@@ -144,8 +144,8 @@
 				B2587F701579E8AC009D7B44 /* BLYClient.m */,
 				B2587F731579E8B4009D7B44 /* BLYChannel.h */,
 				B2587F741579E8B4009D7B44 /* BLYChannel.m */,
-				B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */,
 				B28D33DB157A921200769AD0 /* BLYClientPrivate.h */,
+				B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */,
 			);
 			path = Bully;
 			sourceTree = "<group>";
