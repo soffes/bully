@@ -6,5 +6,5 @@
 //  Copyright (c) 2012 Sam Soffes. All rights reserved.
 //
 
-#import <Bully/BLClient.h>
-#import <Bully/BLChannel.h>
+#import <Bully/BLYClient.h>
+#import <Bully/BLYChannel.h>

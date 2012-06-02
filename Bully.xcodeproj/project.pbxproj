@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		B2587E4F1579E740009D7B44 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2587E4E1579E740009D7B44 /* Foundation.framework */; };
 		B2587F6A1579E7D9009D7B44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2587F691579E7D9009D7B44 /* CFNetwork.framework */; };
-		B2587F711579E8AC009D7B44 /* BLClient.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F6F1579E8AC009D7B44 /* BLClient.h */; };
-		B2587F721579E8AC009D7B44 /* BLClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2587F701579E8AC009D7B44 /* BLClient.m */; };
-		B2587F751579E8B4009D7B44 /* BLChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F731579E8B4009D7B44 /* BLChannel.h */; };
-		B2587F761579E8B4009D7B44 /* BLChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2587F741579E8B4009D7B44 /* BLChannel.m */; };
+		B2587F711579E8AC009D7B44 /* BLYClient.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F6F1579E8AC009D7B44 /* BLYClient.h */; };
+		B2587F721579E8AC009D7B44 /* BLYClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2587F701579E8AC009D7B44 /* BLYClient.m */; };
+		B2587F751579E8B4009D7B44 /* BLYChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F731579E8B4009D7B44 /* BLYChannel.h */; };
+		B2587F761579E8B4009D7B44 /* BLYChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2587F741579E8B4009D7B44 /* BLYChannel.m */; };
 		B2587F781579EC64009D7B44 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2587F601579E798009D7B44 /* libSocketRocket.a */; };
 /* End PBXBuildFile section */
 
@@ -60,10 +60,12 @@
 		B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		B2587F691579E7D9009D7B44 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		B2587F6E1579E842009D7B44 /* Bully.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bully.h; sourceTree = "<group>"; };
-		B2587F6F1579E8AC009D7B44 /* BLClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLClient.h; sourceTree = "<group>"; };
-		B2587F701579E8AC009D7B44 /* BLClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLClient.m; sourceTree = "<group>"; };
-		B2587F731579E8B4009D7B44 /* BLChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLChannel.h; sourceTree = "<group>"; };
-		B2587F741579E8B4009D7B44 /* BLChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLChannel.m; sourceTree = "<group>"; };
+		B2587F6F1579E8AC009D7B44 /* BLYClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLYClient.h; sourceTree = "<group>"; };
+		B2587F701579E8AC009D7B44 /* BLYClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLYClient.m; sourceTree = "<group>"; };
+		B2587F731579E8B4009D7B44 /* BLYChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLYChannel.h; sourceTree = "<group>"; };
+		B2587F741579E8B4009D7B44 /* BLYChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLYChannel.m; sourceTree = "<group>"; };
+		B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLYChannelPrivate.h; sourceTree = "<group>"; };
+		B28D33DB157A921200769AD0 /* BLYClientPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLYClientPrivate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,10 +140,12 @@
 			isa = PBXGroup;
 			children = (
 				B2587F6E1579E842009D7B44 /* Bully.h */,
-				B2587F6F1579E8AC009D7B44 /* BLClient.h */,
-				B2587F701579E8AC009D7B44 /* BLClient.m */,
-				B2587F731579E8B4009D7B44 /* BLChannel.h */,
-				B2587F741579E8B4009D7B44 /* BLChannel.m */,
+				B2587F6F1579E8AC009D7B44 /* BLYClient.h */,
+				B2587F701579E8AC009D7B44 /* BLYClient.m */,
+				B2587F731579E8B4009D7B44 /* BLYChannel.h */,
+				B2587F741579E8B4009D7B44 /* BLYChannel.m */,
+				B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */,
+				B28D33DB157A921200769AD0 /* BLYClientPrivate.h */,
 			);
 			path = Bully;
 			sourceTree = "<group>";
@@ -153,8 +157,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2587F711579E8AC009D7B44 /* BLClient.h in Headers */,
-				B2587F751579E8B4009D7B44 /* BLChannel.h in Headers */,
+				B2587F711579E8AC009D7B44 /* BLYClient.h in Headers */,
+				B2587F751579E8B4009D7B44 /* BLYChannel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,8 +251,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2587F721579E8AC009D7B44 /* BLClient.m in Sources */,
-				B2587F761579E8B4009D7B44 /* BLChannel.m in Sources */,
+				B2587F721579E8AC009D7B44 /* BLYClient.m in Sources */,
+				B2587F761579E8B4009D7B44 /* BLYChannel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
