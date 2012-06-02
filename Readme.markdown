@@ -2,7 +2,7 @@
 
 Bully is a simple [Pusher](http://pusher.com) Objective-C client with some neat stuff.
 
-**Note:** This is a work in progress. Presence channels aren't supported yet. Proceed with caution.
+**Note:** This is a work in progress. Presence channels and triggering events aren't supported yet. Proceed with caution.
 
 ## Neat Stuff
 
