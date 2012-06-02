@@ -16,7 +16,7 @@ BLYChannel *chatChannel = [client subscribeToChannelWithName:@"chat"];
 // Bind to an event
 [chatChannel bindToEvent:@"new-message" block:^(id message) {
   // `message` is a dictionary of the Pusher message
-  NSLog(@"New message:" %@, [message objectForKey:@"text"]);
+  NSLog(@"New message: %@", [message objectForKey:@"text"]);
 }];
 
 // Subscribe to a private channel
