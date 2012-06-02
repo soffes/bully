@@ -1,6 +1,8 @@
-# bully
+# Bully
 
-Pusher Objective-C client.
+Simple Pusher Objective-C client.
+
+**Note:** This is a work in progress. Presence channels aren't supported yet. Proceed with caution.
 
 ## Example Usage
 
