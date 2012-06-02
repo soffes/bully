@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^BLClientEventBlock)(NSString *eventName, id message);
+
 @class BLChannel;
 
 @interface BLClient : NSObject
 
 @property (nonatomic, strong, readonly) NSString *socketID;
+@property (nonatomic, copy) BLClientEventBlock eventBlock;
 
 + (NSString *)version;
 

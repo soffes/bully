@@ -13,11 +13,16 @@
 @interface BLClient () <SRWebSocketDelegate>
 @property (nonatomic, strong, readwrite) NSString *socketID;
 @property (nonatomic, strong) SRWebSocket *webSocket;
+
+- (void)_sendEvent:(NSString *)eventName dictionary:(NSDictionary *)dictionary;
 @end
 
-@implementation BLClient
+@implementation BLClient {
+	NSMutableDictionary *_connectedChannels;
+}
 
 @synthesize socketID = _socketID;
+@synthesize eventBlock = _eventBlock;
 @synthesize webSocket = _webSocket;
 
 + (NSString *)version {
@@ -27,18 +32,40 @@
 
 - (id)initWithAppKey:(NSString *)appKey {
 	if ((self = [super init])) {
+		// Connect to Pusher
 		NSString *urlString = [[NSString alloc] initWithFormat:@"wss://ws.pusherapp.com/app/%@?protocol=5&client=bully&version=%@&flash=false", appKey, [[self class] version]];
 		NSURL *url = [[NSURL alloc] initWithString:urlString];
 		self.webSocket = [[SRWebSocket alloc] initWithURL:url];
 		self.webSocket.delegate = self;
 		[self.webSocket open];
+
+		_connectedChannels = [[NSMutableDictionary alloc] init];
 	}
 	return self;
 }
 
 
 - (BLChannel *)subscribe:(NSString *)channelName {
+	BLChannel *channel = [_connectedChannels objectForKey:channelName];
+	if (channel) {
+		return channel;
+	}
+
+	[self _sendEvent:@"pusher:subscribe" dictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
+													 channelName, @"channel",
+													 nil]];
 	return nil;
+}
+
+
+#pragma mark - Private
+
+- (void)_sendEvent:(NSString *)eventName dictionary:(NSDictionary *)dictionary {
+	NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
+							eventName, @"event",
+							dictionary, @"data",
+							nil];
+	[self.webSocket send:[NSJSONSerialization dataWithJSONObject:object options:0 error:nil]];
 }
 
 
@@ -54,6 +81,9 @@
 	NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:messageData options:0 error:nil];
 	NSLog(@"webSocket:didReceiveMessage: %@", dictionary);
 
+	if ([[dictionary objectForKey:@"event"] isEqualToString:@"pusher:connection_established"]) {
+		[self subscribe:@"test1"];
+	}
 }
 
 
