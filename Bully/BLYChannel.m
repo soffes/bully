@@ -51,8 +51,12 @@
 	return [self.name hasPrefix:@"private-"];
 }
 
-- (void)subscribe; {
+- (void)subscribe {
 	if ([self isPrivate]) {
+		if (!self.client.socketID) {
+			return;
+		}
+		
 		if (self.authenticationBlock) {
 			self.authenticationBlock(self);
 		}
@@ -76,5 +80,18 @@
 	}
 	[self.client _sendEvent:@"pusher:subscribe" dictionary:dictionary];
 }
+
+
+- (NSDictionary *)authenticationParameters {
+	return [[NSDictionary alloc] initWithObjectsAndKeys:
+			self.name, @"channel_name",
+			self.client.socketID, @"socket_id",
+			nil];
+}
+
+- (NSData *)authenticationParametersData {
+	return [NSJSONSerialization dataWithJSONObject:self.authenticationParameters options:0 error:nil];
+}
+
 
 @end

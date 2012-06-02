@@ -64,6 +64,10 @@
 
 
 - (void)connect {
+	if (self.webSocket) {
+		return;
+	}
+	
 	NSString *urlString = [[NSString alloc] initWithFormat:@"wss://ws.pusherapp.com/app/%@?protocol=5&client=bully&version=%@&flash=false", self.appKey, [[self class] version]];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	self.webSocket = [[SRWebSocket alloc] initWithURL:url];
@@ -77,6 +81,10 @@
 
 - (void)disconnect {
 	self.webSocket = nil;
+	if ([self.delegate respondsToSelector:@selector(bullyClientDidDisconnect:)]) {
+		[self.delegate bullyClientDidDisconnect:self];
+	}
+	self.socketID = nil;
 }
 
 
@@ -114,13 +122,8 @@
 
 #pragma mark - SRWebSocketDelegate
 
-//- (void)webSocketDidOpen:(SRWebSocket *)webSocket {
-//	NSLog(@"webSocketDidOpen: %@", webSocket);
-//}
-
-
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)messageString {
-	NSLog(@"webSocket:didReceiveMessage: %@", messageString);
+//	NSLog(@"webSocket:didReceiveMessage: %@", messageString);
 	
 	NSData *messageData = [(NSString *)messageString dataUsingEncoding:NSUTF8StringEncoding];
 	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:0 error:nil];
@@ -170,7 +173,7 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
 //	NSLog(@"webSocket:didCloseWithCode: %i reason: %@ wasClean: %i", code, reason, wasClean);
-	self.webSocket = nil;
+	[self disconnect];
 }
 
 @end

@@ -19,6 +19,8 @@ typedef void (^BLYChannelAuthenticationBlock)(BLYChannel *channel);
 @property (nonatomic, strong, readonly) NSString *name;
 @property (nonatomic, weak, readonly) BLYClient *client;
 @property (nonatomic, copy) BLYChannelAuthenticationBlock authenticationBlock;
+@property (nonatomic, strong, readonly) NSDictionary *authenticationParameters;
+@property (nonatomic, strong, readonly) NSData *authenticationParametersData;
 
 - (BOOL)isPrivate;
 
