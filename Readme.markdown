@@ -94,7 +94,7 @@ That's it. The annoying part is over. Now to the fun part.
 If you are using [CocoaPods](http://cocoapods.com) than just add next line to your Podfile:
 
 ``` ruby
-dependency 'SSPullToRefresh'
+dependency 'Bully'
 ```
 
 Now run `pod install` to install the dependency.
