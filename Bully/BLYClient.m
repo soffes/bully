@@ -169,8 +169,19 @@
 				// Call their block with the event data
 				block(eventMessage);
 			}
+			return;
 		}
+
+#if DEBUG
+		NSLog(@"[Bully] Event sent to unsubscribed channel: %@", message);
+#endif
+		return;
 	}
+
+	// Other events
+#if DEBUG
+	NSLog(@"[Bully] Unknown event: %@", message);
+#endif
 }
 
 
