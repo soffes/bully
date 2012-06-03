@@ -63,7 +63,7 @@ BLYChannel *userChannel = [client subscribeToChannelWithName:@"private-user-42" 
 
 ## Adding to Your Project
 
-This is a bit tedious since Apple doesn't allow for iOS frameworks (without hacks) or other easier ways of add dependencies to a project. You can use [CocoaPods](http://cocoapods.com) instead if you prefer (see below).
+This is a bit tedious since Apple doesn't allow for iOS frameworks (without hacks) or other easier ways of add dependencies to a project. You can use [CocoaPods](http://cocoapods.org) instead if you prefer (see below).
 
 1. Add Bully as a [git submodule](http://schacon.github.com/git/user-manual.html#submodules). Here's how to add it as a submodule:
 
@@ -91,7 +91,7 @@ That's it. The annoying part is over. Now to the fun part.
 
 ### CocoaPods
 
-If you are using [CocoaPods](http://cocoapods.com) than just add next line to your Podfile:
+If you are using [CocoaPods](http://cocoapods.org) than just add next line to your Podfile:
 
 ``` ruby
 dependency 'Bully'
