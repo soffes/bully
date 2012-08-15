@@ -64,6 +64,13 @@
 			remoteGlobalIDString = F6B2082C1450F597009315AF;
 			remoteInfo = SocketRocket;
 		};
+		B2EB6AD515DB65860035AD92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B2EB6A7315DB5C800035AD92;
+			remoteInfo = SocketRocketOSXLibrary;
+		};
 		B2FB4897158AFA380067FB00 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
@@ -170,6 +177,7 @@
 				B2587F621579E798009D7B44 /* SocketRocket.framework */,
 				B2587F641579E798009D7B44 /* SRWebSocketTests.octest */,
 				B2587F661579E798009D7B44 /* TestChat.app */,
+				B2EB6AD615DB65860035AD92 /* libSocketRocketOSXLibrary.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -333,6 +341,13 @@
 			fileType = wrapper.application;
 			path = TestChat.app;
 			remoteRef = B2587F651579E798009D7B44 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B2EB6AD615DB65860035AD92 /* libSocketRocketOSXLibrary.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSocketRocketOSXLibrary.a;
+			remoteRef = B2EB6AD515DB65860035AD92 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
