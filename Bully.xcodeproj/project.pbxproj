@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B2587E4F1579E740009D7B44 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2587E4E1579E740009D7B44 /* Foundation.framework */; };
-		B2587F6A1579E7D9009D7B44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2587F691579E7D9009D7B44 /* CFNetwork.framework */; };
+		B2215B7B15DC19FB00DD59C1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2215B7A15DC19FB00DD59C1 /* Security.framework */; };
+		B2215B7D15DC19FF00DD59C1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2215B7C15DC19FF00DD59C1 /* Cocoa.framework */; };
 		B2587F711579E8AC009D7B44 /* BLYClient.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F6F1579E8AC009D7B44 /* BLYClient.h */; };
 		B2587F721579E8AC009D7B44 /* BLYClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2587F701579E8AC009D7B44 /* BLYClient.m */; };
 		B2587F751579E8B4009D7B44 /* BLYChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F731579E8B4009D7B44 /* BLYChannel.h */; };
@@ -22,10 +22,6 @@
 		B294D25715DB6BA900F8D8D7 /* BLYClientPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = B28D33DB157A921200769AD0 /* BLYClientPrivate.h */; };
 		B294D25815DB6BA900F8D8D7 /* BLYChannelPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */; };
 		B294D25F15DB6BC000F8D8D7 /* libSocketRocketOSXLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2EB6AD615DB65860035AD92 /* libSocketRocketOSXLibrary.a */; };
-		B294D26115DB6BC400F8D8D7 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B294D26015DB6BC400F8D8D7 /* CFNetwork.framework */; };
-		B294D26315DB6BD300F8D8D7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B294D26215DB6BD300F8D8D7 /* Security.framework */; };
-		B2EB6BBD15DB69FC0035AD92 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2FB4874158AF9B20067FB00 /* Cocoa.framework */; };
-		B2FB4875158AF9B20067FB00 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2FB4874158AF9B20067FB00 /* Cocoa.framework */; };
 		B2FB488D158AFA170067FB00 /* Bully.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F6E1579E842009D7B44 /* Bully.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B2FB488E158AFA1F0067FB00 /* BLYClient.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F6F1579E8AC009D7B44 /* BLYClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B2FB488F158AFA1F0067FB00 /* BLYClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2587F701579E8AC009D7B44 /* BLYClient.m */; };
@@ -99,10 +95,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B2215B7A15DC19FB00DD59C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		B2215B7C15DC19FF00DD59C1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		B2587E4B1579E740009D7B44 /* libBully.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBully.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2587E4E1579E740009D7B44 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SocketRocket.xcodeproj; sourceTree = "<group>"; };
-		B2587F691579E7D9009D7B44 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		B2587F6E1579E842009D7B44 /* Bully.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bully.h; sourceTree = "<group>"; };
 		B2587F6F1579E8AC009D7B44 /* BLYClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLYClient.h; sourceTree = "<group>"; };
 		B2587F701579E8AC009D7B44 /* BLYClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLYClient.m; sourceTree = "<group>"; };
@@ -110,14 +106,8 @@
 		B2587F741579E8B4009D7B44 /* BLYChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLYChannel.m; sourceTree = "<group>"; };
 		B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLYChannelPrivate.h; sourceTree = "<group>"; };
 		B28D33DB157A921200769AD0 /* BLYClientPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLYClientPrivate.h; sourceTree = "<group>"; };
-		B294D26015DB6BC400F8D8D7 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
-		B294D26215DB6BD300F8D8D7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		B2EB6BBC15DB69FC0035AD92 /* libBullyMacLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBullyMacLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2FB4873158AF9B20067FB00 /* Bully.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bully.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2FB4874158AF9B20067FB00 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		B2FB4877158AF9B20067FB00 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		B2FB4878158AF9B20067FB00 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		B2FB4879158AF9B20067FB00 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B2FB488C158AF9F80067FB00 /* Bully-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Bully-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,8 +117,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2587F781579EC64009D7B44 /* libSocketRocket.a in Frameworks */,
-				B2587F6A1579E7D9009D7B44 /* CFNetwork.framework in Frameworks */,
-				B2587E4F1579E740009D7B44 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,10 +124,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B294D26315DB6BD300F8D8D7 /* Security.framework in Frameworks */,
-				B294D26115DB6BC400F8D8D7 /* CFNetwork.framework in Frameworks */,
+				B2215B7D15DC19FF00DD59C1 /* Cocoa.framework in Frameworks */,
+				B2215B7B15DC19FB00DD59C1 /* Security.framework in Frameworks */,
 				B294D25F15DB6BC000F8D8D7 /* libSocketRocketOSXLibrary.a in Frameworks */,
-				B2EB6BBD15DB69FC0035AD92 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +135,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2FB4899158AFA3D0067FB00 /* SocketRocket.framework in Frameworks */,
-				B2FB4875158AF9B20067FB00 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +144,6 @@
 		B2587E401579E740009D7B44 = {
 			isa = PBXGroup;
 			children = (
-				B294D26215DB6BD300F8D8D7 /* Security.framework */,
 				B2587F6D1579E837009D7B44 /* Bully */,
 				B2FB488B158AF9F80067FB00 /* Resources */,
 				B2587EF81579E798009D7B44 /* Vendor */,
@@ -180,11 +165,8 @@
 		B2587E4D1579E740009D7B44 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B294D26015DB6BC400F8D8D7 /* CFNetwork.framework */,
-				B2587F691579E7D9009D7B44 /* CFNetwork.framework */,
-				B2587E4E1579E740009D7B44 /* Foundation.framework */,
-				B2FB4874158AF9B20067FB00 /* Cocoa.framework */,
-				B2FB4876158AF9B20067FB00 /* Other Frameworks */,
+				B2215B7C15DC19FF00DD59C1 /* Cocoa.framework */,
+				B2215B7A15DC19FB00DD59C1 /* Security.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -229,16 +211,6 @@
 				B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */,
 			);
 			path = Bully;
-			sourceTree = "<group>";
-		};
-		B2FB4876158AF9B20067FB00 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				B2FB4877158AF9B20067FB00 /* AppKit.framework */,
-				B2FB4878158AF9B20067FB00 /* CoreData.framework */,
-				B2FB4879158AF9B20067FB00 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
 		B2FB488B158AF9F80067FB00 /* Resources */ = {
@@ -500,6 +472,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -520,6 +493,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -565,14 +539,14 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Vendor/SocketRocket\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -590,13 +564,13 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Vendor/SocketRocket\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -619,7 +593,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Bully;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -643,7 +617,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Bully;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 			};
