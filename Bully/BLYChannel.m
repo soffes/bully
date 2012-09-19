@@ -17,17 +17,6 @@
 @synthesize subscriptions = _subscriptions;
 @synthesize authenticationBlock = _authenticationBlock;
 
-- (id)initWithName:(NSString *)name client:(BLYClient *)client  authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock {
-	if ((self = [super init])) {
-		self.name = name;
-		self.client = client;
-		self.authenticationBlock = authenticationBlock;
-		self.subscriptions = [[NSMutableDictionary alloc] init];
-	}
-	return self;
-}
-
-
 - (void)bindToEvent:(NSString *)eventName block:(BLYChannelEventBlock)block {
 	[self.subscriptions setObject:block forKey:eventName];
 }
@@ -51,20 +40,18 @@
 	return [self.name hasPrefix:@"private-"];
 }
 
-- (void)subscribe {
-	if ([self isPrivate]) {
-		if (!self.client.socketID) {
-			return;
-		}
-		
-		if (self.authenticationBlock) {
-			self.authenticationBlock(self);
-		}
-		return;
-	}
 
-	[self subscribeWithAuthentication:nil];
+- (NSDictionary *)authenticationParameters {
+	return [[NSDictionary alloc] initWithObjectsAndKeys:
+			self.name, @"channel_name",
+			self.client.socketID, @"socket_id",
+			nil];
 }
+
+- (NSData *)authenticationParametersData {
+	return [NSJSONSerialization dataWithJSONObject:self.authenticationParameters options:0 error:nil];
+}
+
 
 - (void)subscribeWithAuthentication:(NSDictionary *)authentication {
 	NSDictionary *dictionary = nil;
@@ -82,16 +69,32 @@
 }
 
 
-- (NSDictionary *)authenticationParameters {
-	return [[NSDictionary alloc] initWithObjectsAndKeys:
-			self.name, @"channel_name",
-			self.client.socketID, @"socket_id",
-			nil];
+#pragma mark - Private
+
+- (id)_initWithName:(NSString *)name client:(BLYClient *)client  authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock {
+	if ((self = [super init])) {
+		self.name = name;
+		self.client = client;
+		self.authenticationBlock = authenticationBlock;
+		self.subscriptions = [[NSMutableDictionary alloc] init];
+	}
+	return self;
 }
 
-- (NSData *)authenticationParametersData {
-	return [NSJSONSerialization dataWithJSONObject:self.authenticationParameters options:0 error:nil];
-}
 
+- (void)_subscribe {
+	if ([self isPrivate]) {
+		if (!self.client.socketID) {
+			return;
+		}
+
+		if (self.authenticationBlock) {
+			self.authenticationBlock(self);
+		}
+		return;
+	}
+
+	[self subscribeWithAuthentication:nil];
+}
 
 @end

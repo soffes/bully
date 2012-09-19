@@ -24,11 +24,10 @@ typedef void (^BLYChannelAuthenticationBlock)(BLYChannel *channel);
 
 - (BOOL)isPrivate;
 
-- (void)subscribeWithAuthentication:(NSDictionary *)authentication;
-
 - (void)bindToEvent:(NSString *)eventName block:(BLYChannelEventBlock)block;
 - (void)unbindEvent:(NSString *)eventName;
 
+- (void)subscribeWithAuthentication:(NSDictionary *)authentication;
 - (void)unsubscribe;
 
 @end

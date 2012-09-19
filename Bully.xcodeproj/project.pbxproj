@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		B2215B7B15DC19FB00DD59C1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2215B7A15DC19FB00DD59C1 /* Security.framework */; };
 		B2215B7D15DC19FF00DD59C1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2215B7C15DC19FF00DD59C1 /* Cocoa.framework */; };
-		B25642E4160277A200586711 /* BLYPushController.h in Headers */ = {isa = PBXBuildFile; fileRef = B25642E2160277A200586711 /* BLYPushController.h */; };
-		B25642E5160277A200586711 /* BLYPushController.m in Sources */ = {isa = PBXBuildFile; fileRef = B25642E3160277A200586711 /* BLYPushController.m */; };
 		B2564321160285C500586711 /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = B256430B160285C500586711 /* Reachability.h */; };
 		B2564322160285C500586711 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B256430C160285C500586711 /* Reachability.m */; };
 		B256432A160285D900586711 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2564329160285D900586711 /* SystemConfiguration.framework */; };
@@ -103,8 +101,6 @@
 /* Begin PBXFileReference section */
 		B2215B7A15DC19FB00DD59C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		B2215B7C15DC19FF00DD59C1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		B25642E2160277A200586711 /* BLYPushController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLYPushController.h; sourceTree = "<group>"; };
-		B25642E3160277A200586711 /* BLYPushController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLYPushController.m; sourceTree = "<group>"; };
 		B256430B160285C500586711 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		B256430C160285C500586711 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		B2564329160285D900586711 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -231,12 +227,10 @@
 				B2587F6E1579E842009D7B44 /* Bully.h */,
 				B2587F6F1579E8AC009D7B44 /* BLYClient.h */,
 				B2587F701579E8AC009D7B44 /* BLYClient.m */,
+				B28D33DB157A921200769AD0 /* BLYClientPrivate.h */,
 				B2587F731579E8B4009D7B44 /* BLYChannel.h */,
 				B2587F741579E8B4009D7B44 /* BLYChannel.m */,
-				B28D33DB157A921200769AD0 /* BLYClientPrivate.h */,
 				B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */,
-				B25642E2160277A200586711 /* BLYPushController.h */,
-				B25642E3160277A200586711 /* BLYPushController.m */,
 			);
 			path = Bully;
 			sourceTree = "<group>";
@@ -261,7 +255,6 @@
 				B2FB4894158AFA230067FB00 /* Bully.h in Headers */,
 				B2FB4895158AFA230067FB00 /* BLYClientPrivate.h in Headers */,
 				B2FB4896158AFA230067FB00 /* BLYChannelPrivate.h in Headers */,
-				B25642E4160277A200586711 /* BLYPushController.h in Headers */,
 				B2564321160285C500586711 /* Reachability.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,7 +430,6 @@
 			files = (
 				B2587F721579E8AC009D7B44 /* BLYClient.m in Sources */,
 				B2587F761579E8B4009D7B44 /* BLYChannel.m in Sources */,
-				B25642E5160277A200586711 /* BLYPushController.m in Sources */,
 				B2564322160285C500586711 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

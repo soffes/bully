@@ -10,14 +10,34 @@
 #import "BLYClientPrivate.h"
 #import "BLYChannel.h"
 #import "BLYChannelPrivate.h"
+#import "Reachability.h"
 
-@implementation BLYClient
+#if TARGET_OS_IPHONE
+#import <UIKit/UIApplication.h> // For background notificaitons
+#endif
+
+@implementation BLYClient {
+	Reachability *_reachability;
+
+#if TARGET_OS_IPHONE
+	BOOL _appIsBackgrounded;
+#endif
+}
 
 @synthesize socketID = _socketID;
 @synthesize delegate = _delegate;
 @synthesize webSocket = _webSocket;
 @synthesize appKey = _appKey;
 @synthesize connectedChannels = _connectedChannels;
+@synthesize automaticallyReconnect = _automaticallyReconnect;
+
+#if TARGET_OS_IPHONE
+@synthesize automaticallyDisconnectInBackground = _automaticallyDisconnectInBackground;
+@synthesize automaticallyReconnectInBackground = _automaticallyReconnectInBackground;
+#endif
+
+
+#pragma mark - Accessors
 
 - (void)setWebSocket:(SRWebSocket *)webSocket {
 	if (_webSocket) {
@@ -30,20 +50,60 @@
 }
 
 
+#pragma mark - Class Methods
+
+
 + (NSString *)version {
 	return @"0.1.0";
 }
 
 
+#pragma mark - NSObject
+
+- (void)dealloc {
+	[_reachability stopNotifier];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self disconnect];
+}
+
+
+#pragma mark - Initializer
+
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate {
 	if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
+
+		// Automatically reconnect by default
+		_automaticallyReconnect = YES;
+
+		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+
+#if TARGET_OS_IPHONE
+		// Assume we don't start in the background
+		_appIsBackgrounded = NO;
+
+		// Automatically disconnect in the background by default
+		_automaticallyDisconnectInBackground = YES;
+
+		// Listen for background changes
+		[notificationCenter addObserver:self selector:@selector(_appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+		[notificationCenter addObserver:self selector:@selector(_appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+#endif
+
+		// Start reachability
+		_reachability = [Reachability reachabilityWithHostname:@"ws.pusherapp.com"];
+		[_reachability startNotifier];
+		[notificationCenter addObserver:self selector:@selector(_reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+
+		// Connect!
 		[self connect];
 	}
 	return self;
 }
 
+
+#pragma mark - Subscribing
 
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName {
 	return [self subscribeToChannelWithName:channelName authenticationBlock:nil];
@@ -56,12 +116,14 @@
 		return channel;
 	}
 
-	channel = [[BLYChannel alloc] initWithName:channelName client:self authenticationBlock:authenticationBlock];
-	[channel subscribe];
+	channel = [[BLYChannel alloc] _initWithName:channelName client:self authenticationBlock:authenticationBlock];
+	[channel _subscribe];
 	[_connectedChannels setObject:channel forKey:channelName];
 	return channel;
 }
 
+
+#pragma mark - Managing the Connection
 
 - (void)connect {
 	if ([self isConnected]) {
@@ -89,6 +151,22 @@
 		[self.delegate bullyClientDidDisconnect:self];
 	}
 	self.socketID = nil;
+
+	// If we shouldn't auto reconnect, stop
+	if (!_automaticallyReconnect) {
+		return;
+	}
+
+	// If it disconnected but Pusher is reachable
+	if ([_reachability isReachable]) {
+#if TARGET_OS_IPHONE
+		// If the app is in the background and we automatically disconnect in the background, don't reconnect. Duh.
+		if (_appIsBackgrounded && _automaticallyDisconnectInBackground) {
+			return;
+		}
+#endif
+		[self connect];
+	}
 }
 
 
@@ -115,7 +193,7 @@
 - (void)_reconnectChannels {
 	for (NSString *channelName in self.connectedChannels) {
 		BLYChannel *channel = [self.connectedChannels objectForKey:channelName];
-		[channel subscribe];
+		[channel _subscribe];
 	}
 }
 
@@ -126,6 +204,48 @@
 	}
 	
 	[self.connectedChannels removeObjectForKey:channel.name];
+}
+
+
+#if TARGET_OS_IPHONE
+- (void)_appDidEnterBackground:(NSNotification *)notificaiton {
+	_appIsBackgrounded = YES;
+
+	if (_automaticallyDisconnectInBackground) {
+		[self disconnect];
+	}
+}
+
+
+- (void)_appDidBecomeActive:(NSNotification *)notification {
+	if (!_appIsBackgrounded) {
+		return;
+	}
+
+	_appIsBackgrounded = NO;
+
+	if (_automaticallyDisconnectInBackground) {
+		[self connect];
+	}
+}
+#endif
+
+
+- (void)_reachabilityChanged:(NSNotification *)notification {
+#if TARGET_OS_IPHONE
+	// If the app is in the background, ignore the notificaiton
+	if (_appIsBackgrounded) {
+		return;
+	}
+#endif
+
+	if ([_reachability isReachable]) {
+		// If Pusher became reachable, reconnect
+		[self connect];
+	} else {
+		// Disconnect if we lost the connection to Pusher
+		[self disconnect];
+	}
 }
 
 
