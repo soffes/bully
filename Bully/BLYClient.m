@@ -33,7 +33,6 @@
 
 #if TARGET_OS_IPHONE
 @synthesize automaticallyDisconnectInBackground = _automaticallyDisconnectInBackground;
-@synthesize automaticallyReconnectInBackground = _automaticallyReconnectInBackground;
 #endif
 
 
