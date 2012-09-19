@@ -53,7 +53,7 @@
 
 
 + (NSString *)version {
-	return @"0.1.0";
+	return @"0.2.0";
 }
 
 
@@ -128,7 +128,7 @@
 	if ([self isConnected]) {
 		return;
 	}
-	
+
 	NSString *urlString = [[NSString alloc] initWithFormat:@"wss://ws.pusherapp.com/app/%@?protocol=5&client=bully&version=%@&flash=false", self.appKey, [[self class] version]];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	self.webSocket = [[SRWebSocket alloc] initWithURL:url];
@@ -144,7 +144,7 @@
 	if (![self isConnected]) {
 		return;
 	}
-	
+
 	self.webSocket = nil;
 	if ([self.delegate respondsToSelector:@selector(bullyClientDidDisconnect:)]) {
 		[self.delegate bullyClientDidDisconnect:self];
@@ -201,7 +201,7 @@
 	if (!channel) {
 		return;
 	}
-	
+
 	[self.connectedChannels removeObjectForKey:channel.name];
 }
 
@@ -252,7 +252,7 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)messageString {
 //	NSLog(@"webSocket:didReceiveMessage: %@", messageString);
-	
+
 	NSData *messageData = [(NSString *)messageString dataUsingEncoding:NSUTF8StringEncoding];
 	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:0 error:nil];
 
