@@ -62,6 +62,9 @@
 - (void)dealloc {
 	[_reachability stopNotifier];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	_automaticallyReconnect = NO;
+	_automaticallyDisconnectInBackground = NO;
 	[self disconnect];
 }
 
