@@ -188,7 +188,7 @@
 							eventName, @"event",
 							dictionary, @"data",
 							nil];
-	[self.webSocket send:[NSJSONSerialization dataWithJSONObject:object options:0 error:nil]];
+	[self.webSocket send:[NSJSONSerialization dataWithJSONObject:object options:NSJSONReadingAllowFragments error:nil]];
 }
 
 
