@@ -12,4 +12,5 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.dependency 'SocketRocket'
+  s.dependency 'Reachability'
 end
