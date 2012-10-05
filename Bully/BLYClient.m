@@ -30,6 +30,7 @@
 @synthesize appKey = _appKey;
 @synthesize connectedChannels = _connectedChannels;
 @synthesize automaticallyReconnect = _automaticallyReconnect;
+@synthesize jsonParseHandler = _jsonParseHandler;
 
 #if TARGET_OS_IPHONE
 @synthesize automaticallyDisconnectInBackground = _automaticallyDisconnectInBackground;
@@ -261,7 +262,20 @@
 	id eventMessage = [message objectForKey:@"data"];
 	if (eventMessage && [eventMessage isKindOfClass:[NSString class]]) {
 		NSData *eventMessageData = [eventMessage dataUsingEncoding:NSUTF8StringEncoding];
-		eventMessage = [NSJSONSerialization JSONObjectWithData:eventMessageData options:0 error:nil];
+        NSError *parseError = nil;
+		eventMessage = [NSJSONSerialization JSONObjectWithData:eventMessageData options:0 error:&parseError];
+        if (parseError != nil && self.jsonParseHandler != nil) {
+#if DEBUG
+            NSLog(@"[Bully] JSON parser failed attempting to recover from error.");
+#endif
+            eventMessage = self.jsonParseHandler(parseError, eventMessageData);
+            if (eventMessage == nil) {
+#if DEBUG
+                NSLog(@"[Bully] JSON parser failed and failed to recover from parse error.");
+#endif
+                return;
+            }
+        }
 	}
 
 	// Check for pusher:connect_established
