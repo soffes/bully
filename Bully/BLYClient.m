@@ -30,7 +30,6 @@
 @synthesize appKey = _appKey;
 @synthesize connectedChannels = _connectedChannels;
 @synthesize automaticallyReconnect = _automaticallyReconnect;
-@synthesize jsonParseHandler = _jsonParseHandler;
 
 #if TARGET_OS_IPHONE
 @synthesize automaticallyDisconnectInBackground = _automaticallyDisconnectInBackground;
@@ -111,12 +110,17 @@
 
 
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock {
-	BLYChannel *channel = [_connectedChannels objectForKey:channelName];
+	return [self subscribeToChannelWithName:channelName authenticationBlock:authenticationBlock jsonParserErrorBlock:nil];
+}
+
+- (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock jsonParserErrorBlock:(BLYJSONParseErrorBlock)jsonErrorBlock {
+    BLYChannel *channel = [_connectedChannels objectForKey:channelName];
 	if (channel) {
 		return channel;
 	}
-
+    
 	channel = [[BLYChannel alloc] _initWithName:channelName client:self authenticationBlock:authenticationBlock];
+    channel.jsonErrorBlock = jsonErrorBlock;
 	[channel _subscribe];
 	[_connectedChannels setObject:channel forKey:channelName];
 	return channel;
@@ -252,32 +256,21 @@
 #pragma mark - SRWebSocketDelegate
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)messageString {
-//	NSLog(@"webSocket:didReceiveMessage: %@", messageString);
-
+    //	NSLog(@"webSocket:didReceiveMessage: %@", messageString);
+    
 	NSData *messageData = [(NSString *)messageString dataUsingEncoding:NSUTF8StringEncoding];
 	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:0 error:nil];
-
+    
 	// Get event out of Pusher message
 	NSString *eventName = [message objectForKey:@"event"];
 	id eventMessage = [message objectForKey:@"data"];
+    NSError *jsonError = nil;
+    NSData *eventMessageData = nil;
 	if (eventMessage && [eventMessage isKindOfClass:[NSString class]]) {
-		NSData *eventMessageData = [eventMessage dataUsingEncoding:NSUTF8StringEncoding];
-        NSError *parseError = nil;
-		eventMessage = [NSJSONSerialization JSONObjectWithData:eventMessageData options:0 error:&parseError];
-        if (parseError != nil && self.jsonParseHandler != nil) {
-#if DEBUG
-            NSLog(@"[Bully] JSON parser failed attempting to recover from error.");
-#endif
-            eventMessage = self.jsonParseHandler(parseError, eventMessageData);
-            if (eventMessage == nil) {
-#if DEBUG
-                NSLog(@"[Bully] JSON parser failed and failed to recover from parse error.");
-#endif
-                return;
-            }
-        }
+		eventMessageData = [eventMessage dataUsingEncoding:NSUTF8StringEncoding];
+		eventMessage = [NSJSONSerialization JSONObjectWithData:eventMessageData options:0 error:&jsonError];
 	}
-
+    
 	// Check for pusher:connect_established
 	if ([eventName isEqualToString:@"pusher:connection_established"]) {
 		self.socketID = [eventMessage objectForKey:@"socket_id"];
@@ -287,15 +280,20 @@
 		[self _reconnectChannels];
 		return;
 	}
-
+    
 	// Check for channel events
 	NSString *channelName = [message objectForKey:@"channel"];
 	if (channelName) {
 		// Find channel
 		BLYChannel *channel = [self.connectedChannels objectForKey:channelName];
-
+        
 		// Ensure the user is subscribed to the channel
 		if (channel) {
+            
+            if (jsonError != nil && channel.jsonErrorBlock != nil) {
+                eventMessage = channel.jsonErrorBlock(channel, jsonError, eventMessageData);
+            }
+            
 			// See if they are binded to this event
 			BLYChannelEventBlock block = [channel.subscriptions objectForKey:eventName];
 			if (block) {
@@ -304,13 +302,13 @@
 			}
 			return;
 		}
-
+        
 #if DEBUG
 		NSLog(@"[Bully] Event sent to unsubscribed channel: %@", message);
 #endif
 		return;
 	}
-
+    
 	// Other events
 #if DEBUG
 	NSLog(@"[Bully] Unknown event: %@", message);

@@ -11,14 +11,11 @@
 
 @protocol BLYClientDelegate;
 
-typedef id (^BLYJSONParseErrorHandler)(NSError *error, NSData *messageData);
-
 @interface BLYClient : NSObject
 
 @property (nonatomic, strong, readonly) NSString *socketID;
 @property (nonatomic, weak, readonly) id<BLYClientDelegate> delegate;
 @property (nonatomic, assign) BOOL automaticallyReconnect; // Default is YES
-@property (nonatomic, copy) BLYJSONParseErrorHandler jsonParseHandler;
 
 #if TARGET_OS_IPHONE
 @property (nonatomic, assign) BOOL automaticallyDisconnectInBackground; // Default is YES
@@ -33,6 +30,7 @@ typedef id (^BLYJSONParseErrorHandler)(NSError *error, NSData *messageData);
 // Subscribing
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock;
+- (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock jsonParserErrorBlock:(BLYJSONParseErrorBlock)jsonErrorBlock;
 
 // Managing the Connection
 - (void)connect;
