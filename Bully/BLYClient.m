@@ -110,17 +110,17 @@
 
 
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock {
-	return [self subscribeToChannelWithName:channelName authenticationBlock:authenticationBlock jsonParserErrorBlock:nil];
+	return [self subscribeToChannelWithName:channelName authenticationBlock:authenticationBlock errorBlock:nil];
 }
 
-- (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock jsonParserErrorBlock:(BLYJSONParseErrorBlock)jsonErrorBlock {
+- (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock errorBlock:(BLYErrorBlock)errorBlock {
     BLYChannel *channel = [_connectedChannels objectForKey:channelName];
 	if (channel) {
 		return channel;
 	}
     
 	channel = [[BLYChannel alloc] _initWithName:channelName client:self authenticationBlock:authenticationBlock];
-    channel.jsonErrorBlock = jsonErrorBlock;
+    channel.errorBlock = errorBlock;
 	[channel _subscribe];
 	[_connectedChannels setObject:channel forKey:channelName];
 	return channel;
@@ -290,8 +290,8 @@
 		// Ensure the user is subscribed to the channel
 		if (channel) {
             
-            if (jsonError != nil && channel.jsonErrorBlock != nil) {
-                eventMessage = channel.jsonErrorBlock(channel, jsonError, eventMessageData);
+            if (jsonError != nil && channel.errorBlock != nil) {
+                channel.errorBlock(jsonError, BLYErrorTypeJSONParser);
             }
             
 			// See if they are binded to this event

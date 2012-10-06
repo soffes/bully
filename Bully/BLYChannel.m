@@ -16,6 +16,8 @@
 @synthesize name = _name;
 @synthesize subscriptions = _subscriptions;
 @synthesize authenticationBlock = _authenticationBlock;
+@synthesize errorBlock = _errorBlock;
+
 
 - (void)bindToEvent:(NSString *)eventName block:(BLYChannelEventBlock)block {
 	[self.subscriptions setObject:block forKey:eventName];
