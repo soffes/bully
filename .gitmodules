@@ -1,3 +1,6 @@
 [submodule "Vendor/Reachability"]
 	path = Vendor/Reachability
 	url = https://github.com/tonymillion/Reachability.git
+[submodule "Vendor/SocketRocket"]
+	path = Vendor/SocketRocket
+	url = https://github.com/soffes/SocketRocket.git
