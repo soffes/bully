@@ -14,6 +14,12 @@
 typedef void (^BLYChannelEventBlock)(id message);
 typedef void (^BLYChannelAuthenticationBlock)(BLYChannel *channel);
 
+typedef enum {
+    BLYErrorTypeUnknown = 0,
+    BLYErrorTypeJSONParser = 1
+} BLYErrorType;
+typedef void (^BLYErrorBlock)(NSError *error, BLYErrorType errorType);
+
 @interface BLYChannel : NSObject
 
 @property (nonatomic, strong, readonly) NSString *name;
@@ -21,6 +27,7 @@ typedef void (^BLYChannelAuthenticationBlock)(BLYChannel *channel);
 @property (nonatomic, copy) BLYChannelAuthenticationBlock authenticationBlock;
 @property (nonatomic, strong, readonly) NSDictionary *authenticationParameters;
 @property (nonatomic, strong, readonly) NSData *authenticationParametersData;
+@property (nonatomic, copy) BLYErrorBlock errorBlock;
 
 - (BOOL)isPrivate;
 
