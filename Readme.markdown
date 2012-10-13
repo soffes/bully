@@ -99,7 +99,7 @@ That's it. The annoying part is over. Now to the fun part.
 
 ### CocoaPods
 
-If you are using [CocoaPods](http://cocoapods.org) than just add next line to your Podfile:
+If you are using [CocoaPods](http://cocoapods.org) then just add next line to your Podfile:
 
 ``` ruby
 dependency 'Bully'
