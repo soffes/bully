@@ -78,6 +78,12 @@
 
 		// Automatically reconnect by default
 		_automaticallyReconnect = YES;
+        
+        if ([self.delegate respondsToSelector:@selector(bullyClientCustomPusherHost:)]) {
+            _hostName = [self.delegate bullyClientCustomPusherHost:self];
+        } else {
+            _hostName = @"ws.pusherapp.com";
+        }
 
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
@@ -94,7 +100,7 @@
 #endif
 
 		// Start reachability
-		_reachability = [Reachability reachabilityWithHostname:@"ws.pusherapp.com"];
+		_reachability = [Reachability reachabilityWithHostname:self.hostName];
 		[_reachability startNotifier];
 		[notificationCenter addObserver:self selector:@selector(_reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
@@ -137,7 +143,7 @@
 		return;
 	}
 
-	NSString *urlString = [[NSString alloc] initWithFormat:@"wss://ws.pusherapp.com/app/%@?protocol=5&client=bully&version=%@&flash=false", self.appKey, [[self class] version]];
+	NSString *urlString = [[NSString alloc] initWithFormat:@"wss://%@/app/%@?protocol=5&client=bully&version=%@&flash=false", self.hostName, self.appKey, [[self class] version]];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	self.webSocket = [[SRWebSocket alloc] initWithURL:url];
 	[self.webSocket open];
@@ -188,7 +194,7 @@
 	if (self.webSocket.readyState != SR_OPEN) {
 		return;
 	}
-
+    
 	NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
 							eventName, @"event",
 							dictionary, @"data",
@@ -259,7 +265,7 @@
 #pragma mark - SRWebSocketDelegate
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)messageString {
-    //	NSLog(@"webSocket:didReceiveMessage: %@", messageString);
+    //  NSLog(@"webSocket:didReceiveMessage: %@", messageString);
     
 	NSData *messageData = [(NSString *)messageString dataUsingEncoding:NSUTF8StringEncoding];
 	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:0 error:nil];

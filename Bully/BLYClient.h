@@ -17,6 +17,8 @@
 @property (nonatomic, weak, readonly) id<BLYClientDelegate> delegate;
 @property (nonatomic, assign) BOOL automaticallyReconnect; // Default is YES
 
+@property (nonatomic, strong, readonly) NSString *hostName;
+
 #if TARGET_OS_IPHONE
 @property (nonatomic, assign) BOOL automaticallyDisconnectInBackground; // Default is YES
 #endif
@@ -47,5 +49,6 @@
 - (void)bullyClientDidConnect:(BLYClient *)client;
 - (void)bullyClient:(BLYClient *)client didReceiveError:(NSError *)error;
 - (void)bullyClientDidDisconnect:(BLYClient *)client;
+- (NSString *)bullyClientCustomPusherHost:(BLYClient *)client;
 
 @end
