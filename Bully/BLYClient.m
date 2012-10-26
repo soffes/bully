@@ -72,38 +72,42 @@
 #pragma mark - Initializer
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate {
-	if ((self = [super init])) {
+    return [self initWithAppKey:appKey delegate:delegate hostName:nil];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName {
+    if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
-
+        
 		// Automatically reconnect by default
 		_automaticallyReconnect = YES;
         
-        if ([self.delegate respondsToSelector:@selector(bullyClientCustomPusherHost:)]) {
-            _hostName = [self.delegate bullyClientCustomPusherHost:self];
+        if (hostName != nil) {
+            _hostName = hostName;
         } else {
             _hostName = @"ws.pusherapp.com";
         }
-
+        
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-
+        
 #if TARGET_OS_IPHONE
 		// Assume we don't start in the background
 		_appIsBackgrounded = NO;
-
+        
 		// Automatically disconnect in the background by default
 		_automaticallyDisconnectInBackground = YES;
-
+        
 		// Listen for background changes
 		[notificationCenter addObserver:self selector:@selector(_appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 		[notificationCenter addObserver:self selector:@selector(_appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 #endif
-
+        
 		// Start reachability
 		_reachability = [Reachability reachabilityWithHostname:self.hostName];
 		[_reachability startNotifier];
 		[notificationCenter addObserver:self selector:@selector(_reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-
+        
 		// Connect!
 		[self connect];
 	}

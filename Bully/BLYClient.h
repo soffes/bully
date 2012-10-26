@@ -28,6 +28,7 @@
 
 // Initializer
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate;
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName;
 
 // Subscribing
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;
@@ -49,6 +50,5 @@
 - (void)bullyClientDidConnect:(BLYClient *)client;
 - (void)bullyClient:(BLYClient *)client didReceiveError:(NSError *)error;
 - (void)bullyClientDidDisconnect:(BLYClient *)client;
-- (NSString *)bullyClientCustomPusherHost:(BLYClient *)client;
 
 @end
