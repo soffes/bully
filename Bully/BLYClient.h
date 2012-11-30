@@ -15,14 +15,24 @@
 
 @property (nonatomic, strong, readonly) NSString *socketID;
 @property (nonatomic, weak, readonly) id<BLYClientDelegate> delegate;
+@property (nonatomic, assign) BOOL automaticallyReconnect; // Default is YES
 
+#if TARGET_OS_IPHONE
+@property (nonatomic, assign) BOOL automaticallyDisconnectInBackground; // Default is YES
+#endif
+
+// Bully Version
 + (NSString *)version;
 
+// Initializer
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate;
 
+// Subscribing
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock;
+- (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock errorBlock:(BLYErrorBlock)errorBlock;
 
+// Managing the Connection
 - (void)connect;
 - (void)disconnect;
 - (BOOL)isConnected;

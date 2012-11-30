@@ -16,7 +16,7 @@
 @property (nonatomic, strong, readwrite) NSString *name;
 @property (nonatomic, strong) NSMutableDictionary *subscriptions;
 
-- (id)initWithName:(NSString *)name client:(BLYClient *)client authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock;
-- (void)subscribe;
+- (id)_initWithName:(NSString *)name client:(BLYClient *)client authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock;
+- (void)_subscribe;
 
 @end

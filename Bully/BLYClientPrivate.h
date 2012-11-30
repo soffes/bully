@@ -20,8 +20,15 @@
 @property (nonatomic, strong) NSString *appKey;
 @property (nonatomic, strong) NSMutableDictionary *connectedChannels;
 
+
 - (void)_sendEvent:(NSString *)eventName dictionary:(NSDictionary *)dictionary;
 - (void)_reconnectChannels;
 - (void)_removeChannel:(BLYChannel *)channel;
+- (void)_reachabilityChanged:(NSNotification *)notification;
+
+#if TARGET_OS_IPHONE
+- (void)_appDidEnterBackground:(NSNotification *)notificaiton;
+- (void)_appDidBecomeActive:(NSNotification *)notification;
+#endif
 
 @end
