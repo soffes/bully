@@ -64,7 +64,11 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	_automaticallyReconnect = NO;
+
+#if TARGET_OS_IPHONE
 	_automaticallyDisconnectInBackground = NO;
+#endif
+	
 	[self disconnect];
 }
 
