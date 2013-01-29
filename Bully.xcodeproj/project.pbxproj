@@ -32,6 +32,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		21924D7B16B7A68400C7AC44 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F6B2082C1450F597009315AF;
+			remoteInfo = SocketRocket;
+		};
 		B2587F5F1579E798009D7B44 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
@@ -59,13 +66,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = F62417E314D52F3C003CE997;
 			remoteInfo = TestChat;
-		};
-		B2587F671579E7A9009D7B44 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F6B2082C1450F597009315AF;
-			remoteInfo = SocketRocket;
 		};
 		B294D25D15DB6BBC00F8D8D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -260,7 +260,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				B2587F681579E7A9009D7B44 /* PBXTargetDependency */,
+				21924D7C16B7A68400C7AC44 /* PBXTargetDependency */,
 			);
 			name = Bully;
 			productName = Bully;
@@ -379,10 +379,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		B2587F681579E7A9009D7B44 /* PBXTargetDependency */ = {
+		21924D7C16B7A68400C7AC44 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SocketRocket;
-			targetProxy = B2587F671579E7A9009D7B44 /* PBXContainerItemProxy */;
+			targetProxy = 21924D7B16B7A68400C7AC44 /* PBXContainerItemProxy */;
 		};
 		B294D25E15DB6BBC00F8D8D7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
