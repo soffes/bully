@@ -134,6 +134,15 @@
 }
 
 
+#pragma mark - Unsubscribe all
+
+- (void)unsubscribeAll {
+    NSArray *channels = [_connectedChannels allValues];
+    [channels makeObjectsPerformSelector:@selector(unsubscribe)];
+    self.connectedChannels = [NSMutableDictionary dictionary];
+}
+
+
 #pragma mark - Managing the Connection
 
 - (void)connect {

@@ -32,6 +32,9 @@
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock;
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock errorBlock:(BLYErrorBlock)errorBlock;
 
+// Unsubscribe all
+- (void)unsubscribeAll;
+
 // Managing the Connection
 - (void)connect;
 - (void)disconnect;
