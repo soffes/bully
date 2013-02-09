@@ -25,7 +25,6 @@
 		B294D25615DB6BA900F8D8D7 /* BLYChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2587F741579E8B4009D7B44 /* BLYChannel.m */; };
 		B294D25715DB6BA900F8D8D7 /* BLYClientPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = B28D33DB157A921200769AD0 /* BLYClientPrivate.h */; };
 		B294D25815DB6BA900F8D8D7 /* BLYChannelPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */; };
-		B294D25F15DB6BC000F8D8D7 /* libSocketRocketOSXLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2EB6AD615DB65860035AD92 /* libSocketRocketOSXLibrary.a */; };
 		B2FB4894158AFA230067FB00 /* Bully.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F6E1579E842009D7B44 /* Bully.h */; };
 		B2FB4895158AFA230067FB00 /* BLYClientPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = B28D33DB157A921200769AD0 /* BLYClientPrivate.h */; };
 		B2FB4896158AFA230067FB00 /* BLYChannelPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */; };
@@ -67,20 +66,6 @@
 			remoteGlobalIDString = F62417E314D52F3C003CE997;
 			remoteInfo = TestChat;
 		};
-		B294D25D15DB6BBC00F8D8D7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = B2EB6A7215DB5C800035AD92;
-			remoteInfo = SocketRocketOSXLibrary;
-		};
-		B2EB6AD515DB65860035AD92 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B2EB6A7315DB5C800035AD92;
-			remoteInfo = SocketRocketOSXLibrary;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -120,7 +105,6 @@
 			files = (
 				B2215B7D15DC19FF00DD59C1 /* Cocoa.framework in Frameworks */,
 				B2215B7B15DC19FB00DD59C1 /* Security.framework in Frameworks */,
-				B294D25F15DB6BC000F8D8D7 /* libSocketRocketOSXLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +175,6 @@
 				B2587F621579E798009D7B44 /* SocketRocket.framework */,
 				B2587F641579E798009D7B44 /* SRWebSocketTests.octest */,
 				B2587F661579E798009D7B44 /* TestChat.app */,
-				B2EB6AD615DB65860035AD92 /* libSocketRocketOSXLibrary.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -278,7 +261,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				B294D25E15DB6BBC00F8D8D7 /* PBXTargetDependency */,
 			);
 			name = BullyMac;
 			productName = BullyMacLibrary;
@@ -291,7 +273,7 @@
 		B2587E421579E740009D7B44 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Sam Soffes";
 			};
 			buildConfigurationList = B2587E451579E740009D7B44 /* Build configuration list for PBXProject "Bully" */;
@@ -347,13 +329,6 @@
 			remoteRef = B2587F651579E798009D7B44 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		B2EB6AD615DB65860035AD92 /* libSocketRocketOSXLibrary.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSocketRocketOSXLibrary.a;
-			remoteRef = B2EB6AD515DB65860035AD92 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -384,11 +359,6 @@
 			name = SocketRocket;
 			targetProxy = 21924D7B16B7A68400C7AC44 /* PBXContainerItemProxy */;
 		};
-		B294D25E15DB6BBC00F8D8D7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SocketRocketOSXLibrary;
-			targetProxy = B294D25D15DB6BBC00F8D8D7 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -399,6 +369,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -427,6 +400,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;

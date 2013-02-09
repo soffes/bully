@@ -206,7 +206,7 @@
 							eventName, @"event",
 							dictionary, @"data",
 							nil];
-	[self.webSocket send:[NSJSONSerialization dataWithJSONObject:object options:NSJSONReadingAllowFragments error:nil]];
+	[self.webSocket send:[NSJSONSerialization dataWithJSONObject:object options:0 error:nil]];
 }
 
 
@@ -275,7 +275,7 @@
     //	NSLog(@"webSocket:didReceiveMessage: %@", messageString);
     
 	NSData *messageData = [(NSString *)messageString dataUsingEncoding:NSUTF8StringEncoding];
-	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:0 error:nil];
+	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:NSJSONReadingAllowFragments error:nil];
     
 	// Get event out of Pusher message
 	NSString *eventName = [message objectForKey:@"event"];
@@ -284,7 +284,7 @@
     NSData *eventMessageData = nil;
 	if (eventMessage && [eventMessage isKindOfClass:[NSString class]]) {
 		eventMessageData = [eventMessage dataUsingEncoding:NSUTF8StringEncoding];
-		eventMessage = [NSJSONSerialization JSONObjectWithData:eventMessageData options:0 error:&jsonError];
+		eventMessage = [NSJSONSerialization JSONObjectWithData:eventMessageData options:NSJSONReadingAllowFragments error:&jsonError];
 	}
     
 	// Check for pusher:connect_established
