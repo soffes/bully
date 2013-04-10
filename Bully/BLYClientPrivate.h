@@ -17,7 +17,9 @@
 @property (nonatomic, strong, readwrite) NSString *socketID;
 @property (nonatomic, weak, readwrite) id<BLYClientDelegate> delegate;
 @property (nonatomic, strong) SRWebSocket *webSocket;
+@property (nonatomic, strong) NSString *appID;
 @property (nonatomic, strong) NSString *appKey;
+@property (nonatomic, strong) NSString *appSecret;
 @property (nonatomic, strong) NSMutableDictionary *connectedChannels;
 
 
