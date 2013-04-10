@@ -17,6 +17,8 @@
 @property (nonatomic, weak, readonly) id<BLYClientDelegate> delegate;
 @property (nonatomic, assign) BOOL automaticallyReconnect; // Default is YES
 
+@property (nonatomic, strong, readonly) NSString *hostName;
+
 #if TARGET_OS_IPHONE
 @property (nonatomic, assign) BOOL automaticallyDisconnectInBackground; // Default is YES
 #endif
@@ -26,6 +28,7 @@
 
 // Initializer
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate;
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName;
 
 // Subscribing
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;
