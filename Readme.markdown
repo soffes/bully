@@ -69,6 +69,18 @@ BLYChannel *userChannel = [client subscribeToChannelWithName:@"private-user-42" 
 }];
 ```
 
+
+#### Sending events to Pusher
+
+You can send events to the Pusher API with BLYEvent.
+
+``` objective-c
+#import <Bully/BLYEvent.h>
+
+[BLYEvent setAppID:@1 key:@"app_key" secret:@"app_secret"];
+[[BLYEvent eventWithName:@"my_awesome_event_name" channels:@[@"the_cool_channel"] data:@{@"foo": @"bar"}] trigger];
+```
+
 ## Adding to Your Project
 
 This is a bit tedious since Apple doesn't allow for iOS frameworks (without hacks) or other easier ways of add dependencies to a project. You can use [CocoaPods](http://cocoapods.org) instead if you prefer (see below).
