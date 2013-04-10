@@ -11,6 +11,7 @@
 #import "BLYChannel.h"
 #import "BLYChannelPrivate.h"
 #import "Reachability.h"
+#import "BLYEventPrivate.h"
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIApplication.h> // For background notificaitons
@@ -80,9 +81,15 @@
 }
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName {
+    return [self initWithAppKey:appKey delegate:delegate hostName:hostName appID:nil appSecret:nil];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName appID:(NSString *)appID appSecret:(NSString *)appSecret {
     if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
+        self.appID = appID;
+        self.appSecret = appSecret;
         
 		// Automatically reconnect by default
 		_automaticallyReconnect = YES;
@@ -351,6 +358,22 @@
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
 //	NSLog(@"webSocket:didCloseWithCode: %i reason: %@ wasClean: %i", code, reason, wasClean);
 	[self disconnect];
+}
+
+
+#pragma mark - Event Triggering
+
+- (void)triggerEvent:(BLYEvent *)event {
+    NSAssert(self.appID, @"Must have an app ID");
+    NSAssert(self.appSecret, @"Must have an app secret");
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul), ^{
+        NSURLRequest *request = [event eventRequestWithAppID:self.appID key:self.appKey secret:self.appSecret];
+        NSHTTPURLResponse *response = nil;
+        NSError *error = nil;
+//        NSData *responseBody = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    });
 }
 
 @end

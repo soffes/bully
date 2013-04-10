@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "BLYChannel.h"
 
+@class BLYEvent;
+
 @protocol BLYClientDelegate;
 
 @interface BLYClient : NSObject
@@ -29,6 +31,7 @@
 // Initializer
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate;
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName;
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName appID:(NSString *)appID appSecret:(NSString *)appSecret;
 
 // Subscribing
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;
@@ -42,6 +45,9 @@
 - (void)connect;
 - (void)disconnect;
 - (BOOL)isConnected;
+
+// Sending Events
+- (void)triggerEvent:(BLYEvent *)event;
 
 @end
 
