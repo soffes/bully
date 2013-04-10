@@ -77,14 +77,14 @@
 #pragma mark - Initializer
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate {
-    return [self initWithAppKey:appKey delegate:delegate hostName:nil];
+    return [self initWithAppKey:appKey delegate:delegate appID:nil appSecret:nil];
 }
 
-- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName {
-    return [self initWithAppKey:appKey delegate:delegate hostName:hostName appID:nil appSecret:nil];
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate appID:(NSString *)appID appSecret:(NSString *)appSecret {
+    return [self initWithAppKey:appKey delegate:delegate appID:appID appSecret:appSecret hostName:nil];
 }
 
-- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName appID:(NSString *)appID appSecret:(NSString *)appSecret {
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate appID:(NSString *)appID appSecret:(NSString *)appSecret hostName:(NSString *)hostName {
     if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
