@@ -11,19 +11,7 @@
 
 #import "BLYEvent.h"
 
-#define PUSHER_API_URL @"api.pusherapp.com"
-
-static NSNumber *_appId;
-static NSString *_key;
-static NSString *_secret;
-
 @implementation BLYEvent
-
-+ (void)setAppID:(NSNumber *)appID key:(NSString *)key secret:(NSString *)secret {
-    _appId = appID;
-    _key = key;
-    _secret = secret;
-}
 
 + (instancetype)eventWithName:(NSString *)name channels:(NSArray *)channels data:(NSDictionary *)data {
     BLYEvent *event = [[[self class] alloc] init];

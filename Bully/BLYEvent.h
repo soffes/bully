@@ -10,11 +10,6 @@
 
 @interface BLYEvent : NSObject
 
-/** Set authentication details
-
- */
-+ (void)setAppID:(NSNumber *)appID key:(NSString *)key secret:(NSString *)secret;
-
 #pragma mark -
 #pragma mark - Creating An Event
 
@@ -28,11 +23,5 @@
 @property (nonatomic, strong) NSDictionary *data;
 
 + (instancetype)eventWithName:(NSString *)name channels:(NSArray *)channels data:(NSDictionary *)data;
-
-// Trigger an event and send it to Pusher
-- (void)trigger;
-
-// Trigger an event and send it to Pusher with a completion block
-- (void)triggerWithCompletion:(void(^)(BLYEvent *event, NSUInteger statusCode, NSDictionary *response))completion;
 
 @end
