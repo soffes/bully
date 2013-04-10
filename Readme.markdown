@@ -75,10 +75,10 @@ BLYChannel *userChannel = [client subscribeToChannelWithName:@"private-user-42" 
 You can send events to the Pusher API with BLYEvent.
 
 ``` objective-c
-#import <Bully/BLYEvent.h>
+BLYClient *client = [[BLYClient alloc] initWithAppKey:@"YOUR_PUSHER_KEY" delegate:self hostName:nil appID:@"YOUR_PUSHER_APP_ID" appSecret:@"YOUR_PUSHER_APP_SECRET"];
+BLYEvent *event = [BLYEvent eventForChannels:@[@"the_cool_channel"] name:@"my_awesome_event" data:@{@"foo": @"bar"}];
 
-[BLYEvent setAppID:@1 key:@"app_key" secret:@"app_secret"];
-[[BLYEvent eventWithName:@"my_awesome_event_name" channels:@[@"the_cool_channel"] data:@{@"foo": @"bar"}] trigger];
+[client triggerEvent:event];
 ```
 
 ## Adding to Your Project
