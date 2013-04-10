@@ -37,9 +37,9 @@ static NSString *_secret;
     [self triggerWithCompletion:nil];
 }
 - (void)triggerWithCompletion:(void(^)(BLYEvent *event, NSUInteger statusCode, NSDictionary *response))completion {
-    NSOperationQueue __block *queue = [[NSOperationQueue alloc] init];
-    [queue addOperation:[NSBlockOperation blockOperationWithBlock:^{
-        [NSURLConnection sendAsynchronousRequest:[self _eventRequest] queue:queue completionHandler:^(NSURLResponse *resp, NSData *data, NSError *error) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
+        NSURLRequest *request = [self _eventRequest];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *resp, NSData *data, NSError *error) {
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)resp;
             id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             if (completion) {
@@ -48,7 +48,7 @@ static NSString *_secret;
                 });
             }
         }];
-    }]];
+    });
 }
 
 
