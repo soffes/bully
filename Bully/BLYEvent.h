@@ -22,6 +22,6 @@
 // The data to send in the event
 @property (nonatomic, strong) NSDictionary *data;
 
-+ (instancetype)eventWithName:(NSString *)name channels:(NSArray *)channels data:(NSDictionary *)data;
++ (instancetype)eventForChannels:(NSArray *)channels name:(NSString *)name data:(NSDictionary *)data;
 
 @end

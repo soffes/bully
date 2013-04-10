@@ -13,7 +13,7 @@
 
 @implementation BLYEvent
 
-+ (instancetype)eventWithName:(NSString *)name channels:(NSArray *)channels data:(NSDictionary *)data {
++ (instancetype)eventForChannels:(NSArray *)channels name:(NSString *)name data:(NSDictionary *)data {
     BLYEvent *event = [[[self class] alloc] init];
     event.name = name;
     event.channels = channels;
