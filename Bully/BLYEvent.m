@@ -39,11 +39,8 @@
     });
 }
 
-
-#pragma mark -
-#pragma mark - Private methods
-- (NSURLRequest *)_eventRequest {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self _URL]];
+- (NSURLRequest *)eventRequestWithAppID:(NSString *)appID key:(NSString *)key secret:(NSString *)secret {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self _URLWithAppID:appID]];
     request.HTTPMethod = @"POST";
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
@@ -52,12 +49,15 @@
     [request setValue:[NSString stringWithFormat:@"%d",[bodyData length]] forHTTPHeaderField:@"Content-Length"];
     
     NSNumber *time = @([[NSDate date] timeIntervalSince1970]);
-    [self _signRequest:&request body:[[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding] timestamp:time];
+     [self _signRequest:&request body:[[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding] timestamp:time key:key secret:secret];
     
     return request;
 }
-- (NSURL *)_URL {
-    NSString *urlString = [NSString stringWithFormat:@"http://%@/apps/%@/events",PUSHER_API_URL,_appId];
+
+#pragma mark -
+#pragma mark - Private methods
+- (NSURL *)_URLWithAppID:(NSString *)appID {
+    NSString *urlString = [NSString stringWithFormat:@"http://api.pusherapp.com/apps/%@/events",appID];
     return [NSURL URLWithString:urlString];
 }
 - (NSData *)_bodyData {
@@ -72,14 +72,14 @@
 
 #pragma mark -
 #pragma mark - Authentication
-- (void)_signRequest:(NSMutableURLRequest *__autoreleasing *)request body:(NSString *)body timestamp:(NSNumber *)timestamp {
+- (void)_signRequest:(NSMutableURLRequest *__autoreleasing *)request body:(NSString *)body timestamp:(NSNumber *)timestamp key:(NSString *)key secret:(NSString *)secret {
     NSString *md5Body = [self _md5String:body];
     NSURL *url = [*request URL];
     NSString *path = [url path];
-    NSString *secretString = [NSString stringWithFormat:@"%@\n%@\nauth_key=%@&auth_timestamp=%@&auth_version=1.0&body_md5=%@",[*request HTTPMethod],path,_key,timestamp,md5Body];
-    NSString *signature = [self _hmac256Key:_secret data:secretString];
+    NSString *secretString = [NSString stringWithFormat:@"%@\n%@\nauth_key=%@&auth_timestamp=%@&auth_version=1.0&body_md5=%@",[*request HTTPMethod],path,key,timestamp,md5Body];
+    NSString *signature = [self _hmac256Key:secret data:secretString];
     NSString *urlString = [url absoluteString];
-    urlString = [urlString stringByAppendingFormat:@"?auth_key=%@&auth_timestamp=%@&auth_version=1.0&body_md5=%@&auth_signature=%@",_key,timestamp,md5Body,signature];
+    urlString = [urlString stringByAppendingFormat:@"?auth_key=%@&auth_timestamp=%@&auth_version=1.0&body_md5=%@&auth_signature=%@",key,timestamp,md5Body,signature];
     [*request setURL:[NSURL URLWithString:urlString]];
 }
 
@@ -106,5 +106,6 @@
     }
     return hash;
 }
+
 
 @end
