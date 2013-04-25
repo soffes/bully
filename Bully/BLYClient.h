@@ -13,6 +13,9 @@
 
 @interface BLYClient : NSObject
 
+// error domain for client errors
+extern NSString *const BLYClientErrorDomain;
+
 @property (nonatomic, strong, readonly) NSString *socketID;
 @property (nonatomic, weak, readonly) id<BLYClientDelegate> delegate;
 @property (nonatomic, assign) BOOL automaticallyReconnect; // Default is YES
@@ -52,6 +55,7 @@
 
 - (void)bullyClientDidConnect:(BLYClient *)client;
 - (void)bullyClient:(BLYClient *)client didReceiveError:(NSError *)error;
-- (void)bullyClientDidDisconnect:(BLYClient *)client;
+- (void)bullyClientDidDisconnect:(BLYClient *)client __attribute__((deprecated("Use bullyClient:didDisconnectWithError instead")));
+- (void)bullyClient:(BLYClient *)client didDisconnectWithError:(NSError *)error;
 
 @end
