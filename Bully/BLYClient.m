@@ -340,6 +340,24 @@
 		return;
 	}
     
+    // Check for pusher:error
+    if ([eventName isEqualToString:@"pusher:error"]) {
+        // find error code and error message
+        NSInteger errorCode = 0;
+        NSString *eventCode = [eventMessage objectForKey:@"code"];
+        if (eventCode) {
+            errorCode = [eventCode integerValue];
+        }
+        NSString *errorMessage = [eventMessage objectForKey:@"message"];
+        
+        NSError *error = [NSError errorWithDomain:BLYClientErrorDomain code:errorCode userInfo:@{@"reason": errorMessage}];
+        
+        if ([self.delegate respondsToSelector:@selector(bullyClient:didReceiveError:)]) {
+            [self.delegate bullyClient:self didReceiveError:error];
+        }
+        return;
+    }
+    
 	// Other events
 #if DEBUG
 	NSLog(@"[Bully] Unknown event: %@", message);
