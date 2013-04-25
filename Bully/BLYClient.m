@@ -179,8 +179,8 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 	}
 
 	// in case the connection was disconnected
-    // do not reconnect automatically
-    [self _handleDisconnectAllowAutomaticReconnect:NO error:nil];
+	// do not reconnect automatically
+	[self _handleDisconnectAllowAutomaticReconnect:NO error:nil];
 }
 
 
@@ -227,18 +227,18 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 
 - (void)_handleDisconnectAllowAutomaticReconnect:(BOOL)allowReconnect error:(NSError *)error {
-    self.webSocket = nil;
-    // notify delegate about the disconnection
+	self.webSocket = nil;
+	// notify delegate about the disconnection
 	if ([self.delegate respondsToSelector:@selector(bullyClientDidDisconnect:)]) { // deprecated method call
 		[self.delegate bullyClientDidDisconnect:self];
 	}
-    if ([self.delegate respondsToSelector:@selector(bullyClient:didDisconnectWithError:)]) {
+	if ([self.delegate respondsToSelector:@selector(bullyClient:didDisconnectWithError:)]) {
 		[self.delegate bullyClient:self didDisconnectWithError:error];
 	}
 	self.socketID = nil;
     
-    // If we are not allowed to reconnect due to the pusher connection protocol
-    // or if we shouldn't auto reconnect, stop
+	// If we are not allowed to reconnect due to the pusher connection protocol
+	// or if we shouldn't auto reconnect, stop
 	if (!allowReconnect || !_automaticallyReconnect) {
 		return;
 	}
@@ -257,19 +257,19 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 
 - (void)_reconnectAfterDelay {
-    // TODO: add delegate method?
-    // bullyClient:WillReconnectAfterDelay:
+	// TODO: add delegate method?
+	// bullyClient:WillReconnectAfterDelay:
 #if DEBUG
 	NSLog(@"[Bully] Reconnecting after 3 seconds delay");
 #endif
     
-    // back off for 3 seconds
-    dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
-    dispatch_after(timeout, dispatch_get_main_queue(), ^(void){
-        if (_automaticallyReconnect) {
-            [self connect];
-        }
-    });
+	// back off for 3 seconds
+	dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
+	dispatch_after(timeout, dispatch_get_main_queue(), ^(void){
+		if (_automaticallyReconnect) {
+			[self connect];
+		}
+	});
 }
 
 
@@ -381,36 +381,36 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
 //	NSLog(@"webSocket:didFailWithError: %@", error);
 	[self _handleDisconnectAllowAutomaticReconnect:NO error:error];
-    [self _reconnectAfterDelay];
+	[self _reconnectAfterDelay];
 }
 
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
 //	NSLog(@"webSocket:didCloseWithCode: %i reason: %@ wasClean: %i", code, reason, wasClean);
 	
-    // check for error codes based on the Pusher Websocket protocol
-    // see http://pusher.com/docs/pusher_protocol
-    // protocol >= 6 also exposes a human-readable reason why the disconnect happened
-    NSError *error = [NSError errorWithDomain:BLYClientErrorDomain code:code userInfo:@{@"reason": reason}];
+	// check for error codes based on the Pusher Websocket protocol
+	// see http://pusher.com/docs/pusher_protocol
+	// protocol >= 6 also exposes a human-readable reason why the disconnect happened
+	NSError *error = [NSError errorWithDomain:BLYClientErrorDomain code:code userInfo:@{@"reason": reason}];
     
-    // 4000-4099 -> The connection SHOULD NOT be re-established unchanged.
-    if (code >= 4000 && code <= 4099) {
-        // do not reconnect
-        [self _handleDisconnectAllowAutomaticReconnect:NO error:error];
-        return;
+	// 4000-4099 -> The connection SHOULD NOT be re-established unchanged.
+	if (code >= 4000 && code <= 4099) {
+		// do not reconnect
+		[self _handleDisconnectAllowAutomaticReconnect:NO error:error];
+		return;
+	}
+    
+	// 4200-4299 -> The connection SHOULD be re-established immediately.
+	if(code >= 4200 && code <= 4299) {
+		// connect immediately
+		[self _handleDisconnectAllowAutomaticReconnect:YES error:error];
+		return;
     }
     
-    // 4200-4299 -> The connection SHOULD be re-established immediately.
-    if(code >= 4200 && code <= 4299) {
-        // connect immediately
-        [self _handleDisconnectAllowAutomaticReconnect:YES error:error];
-        return;
-    }
-    
-    // handle all other error codes
-    // i.e. 4100-4199 -> The connection SHOULD be re-established after backing off.
-    [self _handleDisconnectAllowAutomaticReconnect:NO error:error];
-    [self _reconnectAfterDelay];
+	// handle all other error codes
+	// i.e. 4100-4199 -> The connection SHOULD be re-established after backing off.
+	[self _handleDisconnectAllowAutomaticReconnect:NO error:error];
+	[self _reconnectAfterDelay];
 }
 
 @end
