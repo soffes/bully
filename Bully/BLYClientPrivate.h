@@ -25,6 +25,8 @@
 - (void)_reconnectChannels;
 - (void)_removeChannel:(BLYChannel *)channel;
 - (void)_reachabilityChanged:(NSNotification *)notification;
+- (void)_handleDisconnectAllowAutomaticReconnect:(BOOL)allowReconnect error:(NSError *)error;
+- (void)_reconnectAfterDelay;
 
 #if TARGET_OS_IPHONE
 - (void)_appDidEnterBackground:(NSNotification *)notificaiton;
