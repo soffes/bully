@@ -228,13 +228,20 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 - (void)_handleDisconnectAllowAutomaticReconnect:(BOOL)allowReconnect error:(NSError *)error {
 	self.webSocket = nil;
-	// notify delegate about the disconnection
-	if ([self.delegate respondsToSelector:@selector(bullyClientDidDisconnect:)]) { // deprecated method call
+    
+	// Notify delegate about the disconnection
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+	if ([self.delegate respondsToSelector:@selector(bullyClientDidDisconnect:)]) {
 		[self.delegate bullyClientDidDisconnect:self];
 	}
+#pragma clang diagnostic pop
+    
 	if ([self.delegate respondsToSelector:@selector(bullyClient:didDisconnectWithError:)]) {
 		[self.delegate bullyClient:self didDisconnectWithError:error];
 	}
+    
 	self.socketID = nil;
     
 	// If we are not allowed to reconnect due to the pusher connection protocol
