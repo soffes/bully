@@ -383,7 +383,7 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
         // find error code and error message
         NSInteger errorCode = 0;
         NSString *eventCode = [eventMessage objectForKey:@"code"];
-        if (eventCode) {
+        if ([eventCode respondsToSelector:@selector(integerValue)]) {
             errorCode = [eventCode integerValue];
         }
         NSString *errorMessage = [eventMessage objectForKey:@"message"];
