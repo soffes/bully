@@ -201,7 +201,7 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 							dictionary, @"data",
 							nil];
 
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object options:NSJSONReadingAllowFragments error:nil];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
     // We need to send the data as UTF8 encoded string,
     // otherwise it will be interpreted as binary data
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
