@@ -8,3 +8,4 @@
 
 #import <Bully/BLYClient.h>
 #import <Bully/BLYChannel.h>
+#import <Bully/BLYEvent.h>

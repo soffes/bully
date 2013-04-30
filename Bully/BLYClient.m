@@ -11,6 +11,7 @@
 #import "BLYChannel.h"
 #import "BLYChannelPrivate.h"
 #import "Reachability.h"
+#import "BLYEventPrivate.h"
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIApplication.h> // For background notificaitons
@@ -78,13 +79,19 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 #pragma mark - Initializer
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate {
-    return [self initWithAppKey:appKey delegate:delegate hostName:nil];
+    return [self initWithAppKey:appKey delegate:delegate appID:nil appSecret:nil];
 }
 
-- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName {
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate appID:(NSString *)appID appSecret:(NSString *)appSecret {
+    return [self initWithAppKey:appKey delegate:delegate appID:appID appSecret:appSecret hostName:nil];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate appID:(NSString *)appID appSecret:(NSString *)appSecret hostName:(NSString *)hostName {
     if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
+        self.appID = appID;
+        self.appSecret = appSecret;
         
 		// Automatically reconnect by default
 		_automaticallyReconnect = YES;
@@ -436,6 +443,22 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 	// i.e. 4100-4199 -> The connection SHOULD be re-established after backing off.
 	[self _handleDisconnectAllowAutomaticReconnect:NO error:error];
 	[self _reconnectAfterDelay];
+}
+
+
+#pragma mark - Event Triggering
+
+- (void)triggerEvent:(BLYEvent *)event {
+    NSAssert(self.appID, @"Must have an app ID");
+    NSAssert(self.appSecret, @"Must have an app secret");
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul), ^{
+        NSURLRequest *request = [event eventRequestWithAppID:self.appID key:self.appKey secret:self.appSecret];
+        NSHTTPURLResponse *response = nil;
+        NSError *error = nil;
+//        NSData *responseBody = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    });
 }
 
 @end
