@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21396B9D177299360040FCA2 /* libSocketRocketOSXLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21396B9C177299330040FCA2 /* libSocketRocketOSXLibrary.a */; };
+		21396B9E177299470040FCA2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B256430C160285C500586711 /* Reachability.m */; };
 		B2215B7B15DC19FB00DD59C1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2215B7A15DC19FB00DD59C1 /* Security.framework */; };
 		B2215B7D15DC19FF00DD59C1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2215B7C15DC19FF00DD59C1 /* Cocoa.framework */; };
 		B2564321160285C500586711 /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = B256430B160285C500586711 /* Reachability.h */; };
@@ -31,6 +33,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		21396B95177299330040FCA2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B2EB6A7215DB5C800035AD92;
+			remoteInfo = SocketRocketOSXLibrary;
+		};
+		21396B9B177299330040FCA2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B2EB6A7315DB5C800035AD92;
+			remoteInfo = SocketRocketOSXLibrary;
+		};
 		21924D7B16B7A68400C7AC44 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
@@ -103,6 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21396B9D177299360040FCA2 /* libSocketRocketOSXLibrary.a in Frameworks */,
 				B2215B7D15DC19FF00DD59C1 /* Cocoa.framework in Frameworks */,
 				B2215B7B15DC19FB00DD59C1 /* Security.framework in Frameworks */,
 			);
@@ -175,6 +192,7 @@
 				B2587F621579E798009D7B44 /* SocketRocket.framework */,
 				B2587F641579E798009D7B44 /* SRWebSocketTests.octest */,
 				B2587F661579E798009D7B44 /* TestChat.app */,
+				21396B9C177299330040FCA2 /* libSocketRocketOSXLibrary.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -261,6 +279,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				21396B96177299330040FCA2 /* PBXTargetDependency */,
 			);
 			name = BullyMac;
 			productName = BullyMacLibrary;
@@ -301,6 +320,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		21396B9C177299330040FCA2 /* libSocketRocketOSXLibrary.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSocketRocketOSXLibrary.a;
+			remoteRef = 21396B9B177299330040FCA2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		B2587F601579E798009D7B44 /* libSocketRocket.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -347,6 +373,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B294D25415DB6BA900F8D8D7 /* BLYClient.m in Sources */,
+				21396B9E177299470040FCA2 /* Reachability.m in Sources */,
 				B294D25615DB6BA900F8D8D7 /* BLYChannel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,6 +381,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		21396B96177299330040FCA2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SocketRocketOSXLibrary;
+			targetProxy = 21396B95177299330040FCA2 /* PBXContainerItemProxy */;
+		};
 		21924D7C16B7A68400C7AC44 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SocketRocket;
@@ -368,9 +400,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -406,9 +435,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
