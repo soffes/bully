@@ -51,7 +51,7 @@
 }
 
 - (NSData *)authenticationParametersData {
-	return [NSJSONSerialization dataWithJSONObject:self.authenticationParameters options:0 error:nil];
+	return [NSJSONSerialization dataWithJSONObject:self.authenticationParameters options:kNilOptions error:nil];
 }
 
 
