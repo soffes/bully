@@ -82,6 +82,10 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 }
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName {
+	return [self initWithAppKey:appKey delegate:delegate hostName:hostName connectAutomatically:YES];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName connectAutomatically:(BOOL)connectAutomatically {
     if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
@@ -115,7 +119,9 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 		[notificationCenter addObserver:self selector:@selector(_reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
 		// Connect!
-		[self connect];
+		if (connectAutomatically) {
+			[self connect];
+		}
 	}
 	return self;
 }

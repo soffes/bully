@@ -32,6 +32,7 @@ extern NSString *const BLYClientErrorDomain;
 // Initializer
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate;
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName;
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName connectAutomatically:(BOOL)connectAutomatically;
 
 // Subscribing
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;
