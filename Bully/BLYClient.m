@@ -308,7 +308,7 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 	_appIsBackgrounded = NO;
 
-	if (_automaticallyDisconnectInBackground) {
+	if (_automaticallyDisconnectInBackground && _automaticallyReconnect) {
 		[self connect];
 	}
 }
@@ -316,6 +316,11 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 
 - (void)_reachabilityChanged:(NSNotification *)notification {
+	// user didn't ask for automatic reconnection
+	if (!_automaticallyReconnect) {
+		return;
+	}
+	
 #if TARGET_OS_IPHONE
 	// If the app is in the background, ignore the notificaiton
 	if (_appIsBackgrounded) {
