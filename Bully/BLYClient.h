@@ -40,6 +40,7 @@ extern NSString *const BLYClientErrorDomain;
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock errorBlock:(BLYErrorBlock)errorBlock;
 
 // Unsubscribe all
+- (void)unsubscribeChannelWithName:(NSString *)channelName;
 - (void)unsubscribeAll;
 
 // Managing the Connection

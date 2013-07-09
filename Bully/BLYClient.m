@@ -154,6 +154,12 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 #pragma mark - Unsubscribe all
 
+- (void)unsubscribeChannelWithName:(NSString *)channelName
+{
+	BLYChannel *channel = self.connectedChannels[ channelName ];
+	[channel unsubscribe];
+}
+
 - (void)unsubscribeAll {
     NSArray *channels = [_connectedChannels allValues];
     [channels makeObjectsPerformSelector:@selector(unsubscribe)];
