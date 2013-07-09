@@ -358,15 +358,22 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 		[self _reconnectChannels];
 		return;
 	}
-
+	
 	// Check for channel events
 	NSString *channelName = [message objectForKey:@"channel"];
 	if (channelName) {
 		// Find channel
 		BLYChannel *channel = [self.connectedChannels objectForKey:channelName];
-
+		
 		// Ensure the user is subscribed to the channel
 		if (channel) {
+			if ([eventName isEqualToString:@"pusher_internal:subscription_succeeded"]) {
+				// connected to the channel
+				if ([self.delegate respondsToSelector:@selector(bullyClient:didJoinChannel:)]) {
+					[self.delegate bullyClient:self didJoinChannel:channel];
+				}
+				return;
+			}
 
             if (jsonError != nil && channel.errorBlock != nil) {
                 channel.errorBlock(jsonError, BLYErrorTypeJSONParser);

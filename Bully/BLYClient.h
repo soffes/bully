@@ -59,5 +59,6 @@ extern NSString *const BLYClientErrorDomain;
 - (void)bullyClient:(BLYClient *)client didReceiveError:(NSError *)error;
 - (void)bullyClientDidDisconnect:(BLYClient *)client __attribute__((deprecated("Use bullyClient:didDisconnectWithError instead")));
 - (void)bullyClient:(BLYClient *)client didDisconnectWithError:(NSError *)error;
+- (void)bullyClient:(BLYClient *)client didJoinChannel:(BLYChannel *)channel;
 
 @end
