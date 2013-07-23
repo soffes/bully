@@ -141,6 +141,7 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock errorBlock:(BLYErrorBlock)errorBlock {
     BLYChannel *channel = [_connectedChannels objectForKey:channelName];
 	if (channel) {
+		[channel _subscribe];
 		return channel;
 	}
 
