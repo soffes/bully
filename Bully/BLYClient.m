@@ -18,6 +18,10 @@
 
 NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
+@interface BLYClient ()
+@property (nonatomic, strong) NSTimer *pingTimer;
+@end
+
 @implementation BLYClient {
 	Reachability *_reachability;
 
@@ -338,15 +342,40 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 	}
 }
 
+- (void)_pingTimerHandler:(NSTimer *)sender {
+	[self _sendEvent:@"pusher:ping"
+		  dictionary:@{}];
+}
 
 #pragma mark - SRWebSocketDelegate
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)messageString {
+	// according to http://pusher.com/docs/pusher_protocol#recommendations-for-client-libraries
+	// we will send ping every 120s after last activity
+	// considering that connection should result in a message containing
+	// socket id, we won't initialize timer in -[SRWebSocketDelegate webSocketDidOpen:]
+	// we will disable timer in -[SRWebSocketDelegate webSocket:didCloseWithCode:reason:wasClean:]
+	[self.pingTimer invalidate];
+	self.pingTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self
+													selector:@selector(_pingTimerHandler:)
+													userInfo:nil
+													 repeats:YES];
+	
 	NSData *messageData = [(NSString *)messageString dataUsingEncoding:NSUTF8StringEncoding];
 	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:NSJSONReadingAllowFragments error:nil];
 
 	// Get event out of Pusher message
 	NSString *eventName = [message objectForKey:@"event"];
+	// Ping - pong
+	if ([eventName isEqualToString:@"pusher:ping"]) {
+		[self _sendEvent:@"pusher:pong"
+			  dictionary:@{}];
+		return;
+	} else if ([eventName isEqualToString:@"pusher:pong"]) {
+		// no-op
+		return;
+	}
+	
 	id eventMessage = [message objectForKey:@"data"];
 	NSError *jsonError = nil;
     NSData *eventMessageData = nil;
@@ -432,6 +461,10 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
+	// Terminating ping
+	[self.pingTimer invalidate];
+	self.pingTimer = nil;
+	
 	// Check for error codes based on the Pusher Websocket protocol
 	// See http://pusher.com/docs/pusher_protocol
 	// Protocol >= 6 also exposes a human-readable reason why the disconnect happened
