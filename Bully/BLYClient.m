@@ -17,6 +17,7 @@
 #endif
 
 NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
+NSString *const PusherDefaultURL = @"ws.pusherapp.com";
 
 @implementation BLYClient {
 	Reachability *_reachability;
@@ -78,55 +79,82 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 #pragma mark - Initializer
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate {
-    return [self initWithAppKey:appKey delegate:delegate hostName:nil];
+    return [self initWithAppKey:appKey delegate:delegate encrypted:NO];
 }
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName {
+    return [self initWithAppKey:appKey delegate:delegate hostName:hostName encrypted:NO];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName port:(NSString *)port
+{
+    return [self initWithAppKey:appKey delegate:delegate hostName:hostName port:port encrypted:NO];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate encrypted:(BOOL)encrypted
+{
+    return [self initWithAppKey:appKey delegate:delegate hostName:nil port:nil encrypted:encrypted];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName encrypted:(BOOL)encrypted
+{
+    return [self initWithAppKey:appKey delegate:delegate hostName:hostName port:nil encrypted:encrypted];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName port:(NSString *)port encrypted:(BOOL)encrypted
+{
     if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
-
-		// Automatically reconnect by default
-		_automaticallyReconnect = YES;
-
-        if (hostName != nil) {
-            _hostName = hostName;
-        } else {
-            _hostName = @"ws.pusherapp.com";
-        }
-
+        _automaticallyReconnect = YES;
+        _encrypted = encrypted;
+        _port = port;
+        [self configureHostName:hostName];
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-
-#if TARGET_OS_IPHONE
-		// Assume we don't start in the background
-		_appIsBackgrounded = NO;
-
-		// Automatically disconnect in the background by default
-		_automaticallyDisconnectInBackground = YES;
-
-		// Listen for background changes
-		[notificationCenter addObserver:self selector:@selector(_appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-		[notificationCenter addObserver:self selector:@selector(_appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-#endif
-
-		// Start reachability
-		_reachability = [Reachability reachabilityWithHostname:self.hostName];
-		[_reachability startNotifier];
-		[notificationCenter addObserver:self selector:@selector(_reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-
-		// Connect!
+        [self configureClientForIphoneTargetWithNotificationCenter:notificationCenter];
+        [self configureReachabilityWithNotificationCenter:notificationCenter];
 		[self connect];
 	}
 	return self;
 }
 
+- (void)configureHostName:(NSString *)hostName
+{
+    if (hostName) {
+        _hostName = hostName;
+    } else {
+        _hostName = PusherDefaultURL;
+    }
+}
+
+- (void)configureClientForIphoneTargetWithNotificationCenter:(NSNotificationCenter *)notificationCenter
+{
+    #if TARGET_OS_IPHONE
+        // Assume we don't start in the background
+        _appIsBackgrounded = NO;
+    
+        // Automatically disconnect in the background by default
+        _automaticallyDisconnectInBackground = YES;
+    
+        // Listen for background changes
+        [notificationCenter addObserver:self selector:@selector(_appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [notificationCenter addObserver:self selector:@selector(_appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    #endif
+}
+
+- (void)configureReachabilityWithNotificationCenter:(NSNotificationCenter *)notificationCenter
+{
+    // Start reachability
+    _reachability = [Reachability reachabilityWithHostname:self.hostName];
+    [_reachability startNotifier];
+    [notificationCenter addObserver:self selector:@selector(_reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+}
 
 #pragma mark - Subscribing
 
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName {
 	return [self subscribeToChannelWithName:channelName authenticationBlock:nil];
 }
-
 
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock {
 	return [self subscribeToChannelWithName:channelName authenticationBlock:authenticationBlock errorBlock:nil];
@@ -161,9 +189,7 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 	if ([self isConnected]) {
 		return;
 	}
-
-	NSString *urlString = [[NSString alloc] initWithFormat:@"wss://%@/app/%@?protocol=6&client=bully&version=%@&flash=false", self.hostName, self.appKey, [[self class] version]];
-	NSURL *url = [[NSURL alloc] initWithString:urlString];
+    NSURL *url = [self buildURLString];
 	self.webSocket = [[SRWebSocket alloc] initWithURL:url];
 	[self.webSocket open];
 
@@ -172,6 +198,13 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 	}
 }
 
+- (NSURL *)buildURLString
+{
+    NSString *scheme = (self.encrypted) ? @"wss" : @"ws";
+    NSString *host = (self.port) ? [NSString stringWithFormat:@"%@:%@", self.hostName, self.port] : self.hostName;
+    NSString *urlString = [NSString stringWithFormat:@"%@://%@/app/%@?protocol=6&client=bully&version=%@&flash=false", scheme, host, self.appKey, [[self class] version]];
+    return [NSURL URLWithString:urlString];
+}
 
 - (void)disconnect {
 	if (![self isConnected]) {
