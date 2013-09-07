@@ -16,14 +16,16 @@
 // error domain for client errors
 extern NSString *const BLYClientErrorDomain;
 
-@property (nonatomic, strong, readonly) NSString *socketID;
+@property (nonatomic, readonly) NSString *socketID;
 @property (nonatomic, weak, readonly) id<BLYClientDelegate> delegate;
-@property (nonatomic, assign) BOOL automaticallyReconnect; // Default is YES
+@property (nonatomic) BOOL automaticallyReconnect; // Default is YES
 
-@property (nonatomic, strong, readonly) NSString *hostName;
+@property (nonatomic, readonly) NSString *hostName;
+@property (nonatomic, readonly) NSUInteger port;
+@property (nonatomic, getter = isEncrypted, readonly) BOOL encrypted;
 
 #if TARGET_OS_IPHONE
-@property (nonatomic, assign) BOOL automaticallyDisconnectInBackground; // Default is YES
+@property (nonatomic) BOOL automaticallyDisconnectInBackground; // Default is YES
 #endif
 
 // Bully Version
@@ -31,7 +33,8 @@ extern NSString *const BLYClientErrorDomain;
 
 // Initializer
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate;
-- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName;
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName port:(NSUInteger)port encrypted:(BOOL)encrypted;
+
 
 // Subscribing
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;

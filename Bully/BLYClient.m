@@ -18,13 +18,18 @@
 
 NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
-@implementation BLYClient {
-	Reachability *_reachability;
+@interface BLYClient ()
+@property (nonatomic, strong) Reachability *reachability;
+@property (nonatomic, readwrite) NSString *hostName;
+@property (nonatomic, readwrite) NSUInteger port;
+@property (nonatomic, getter = isEncrypted, readwrite) BOOL encrypted;
 
 #if TARGET_OS_IPHONE
-	BOOL _appIsBackgrounded;
+@property (nonatomic) BOOL appIsBackgrounded;
 #endif
-}
+@end
+
+@implementation BLYClient
 
 @synthesize socketID = _socketID;
 @synthesize delegate = _delegate;
@@ -32,6 +37,9 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 @synthesize appKey = _appKey;
 @synthesize connectedChannels = _connectedChannels;
 @synthesize automaticallyReconnect = _automaticallyReconnect;
+@synthesize reachability = _reachability;
+@synthesize port = _port;
+@synthesize encrypted = _encrypted;
 
 #if TARGET_OS_IPHONE
 @synthesize automaticallyDisconnectInBackground = _automaticallyDisconnectInBackground;
@@ -55,20 +63,20 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 
 + (NSString *)version {
-	return @"0.2.2";
+	return @"0.3.0";
 }
 
 
 #pragma mark - NSObject
 
 - (void)dealloc {
-	[_reachability stopNotifier];
+	[self.reachability stopNotifier];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
-	_automaticallyReconnect = NO;
+	self.automaticallyReconnect = NO;
 
 #if TARGET_OS_IPHONE
-	_automaticallyDisconnectInBackground = NO;
+	self.automaticallyDisconnectInBackground = NO;
 #endif
 
 	[self disconnect];
@@ -78,31 +86,34 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 #pragma mark - Initializer
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate {
-    return [self initWithAppKey:appKey delegate:delegate hostName:nil];
+    return [self initWithAppKey:appKey delegate:delegate hostName:nil port:443 encrypted:YES];
 }
 
-- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName {
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName port:(NSUInteger)port encrypted:(BOOL)encrypted {
     if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
+		self.port = port;
+		self.encrypted = encrypted;
 
 		// Automatically reconnect by default
-		_automaticallyReconnect = YES;
+		self.automaticallyReconnect = YES;
 
         if (hostName != nil) {
-            _hostName = hostName;
+            self.hostName = hostName;
         } else {
-            _hostName = @"ws.pusherapp.com";
+            self.hostName = @"ws.pusherapp.com";
         }
 
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
 #if TARGET_OS_IPHONE
 		// Assume we don't start in the background
-		_appIsBackgrounded = NO;
+		self.appIsBackgrounded = NO;
 
 		// Automatically disconnect in the background by default
-		_automaticallyDisconnectInBackground = YES;
+		self.automaticallyDisconnectInBackground = YES;
 
 		// Listen for background changes
 		[notificationCenter addObserver:self selector:@selector(_appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -110,8 +121,8 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 #endif
 
 		// Start reachability
-		_reachability = [Reachability reachabilityWithHostname:self.hostName];
-		[_reachability startNotifier];
+		self.reachability = [Reachability reachabilityWithHostname:self.hostName];
+		[self.reachability startNotifier];
 		[notificationCenter addObserver:self selector:@selector(_reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
 		// Connect!
@@ -131,6 +142,7 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock {
 	return [self subscribeToChannelWithName:channelName authenticationBlock:authenticationBlock errorBlock:nil];
 }
+
 
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock errorBlock:(BLYErrorBlock)errorBlock {
     BLYChannel *channel = [_connectedChannels objectForKey:channelName];
@@ -162,7 +174,8 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 		return;
 	}
 
-	NSString *urlString = [[NSString alloc] initWithFormat:@"wss://%@/app/%@?protocol=6&client=bully&version=%@&flash=false", self.hostName, self.appKey, [[self class] version]];
+	NSString *scheme = self.encrypted ? @"wss" : @"ws";
+	NSString *urlString = [[NSString alloc] initWithFormat:@"%@://%@:%i/app/%@?protocol=6&client=bully&version=%@&flash=false", scheme, self.hostName, self.port, self.appKey, [[self class] version]];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	self.webSocket = [[SRWebSocket alloc] initWithURL:url];
 	[self.webSocket open];
