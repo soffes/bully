@@ -39,7 +39,7 @@
 
 
 - (BOOL)isPrivate {
-	return [self.name hasPrefix:@"private-"];
+	return [self.name hasPrefix:@"private-"] || [self.name hasPrefix:@"presence-"];
 }
 
 
