@@ -39,7 +39,7 @@
 
 
 - (BOOL)isPrivate {
-	return [self.name hasPrefix:@"private-"];
+	return [self.name hasPrefix:@"private-"] || [self.name hasPrefix:@"presence-"];
 }
 
 
@@ -58,10 +58,9 @@
 - (void)subscribeWithAuthentication:(NSDictionary *)authentication {
 	NSDictionary *dictionary = nil;
 	if (authentication) {
-		dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-					  self.name, @"channel",
-					  [authentication objectForKey:@"auth"], @"auth",
-					  nil];
+		NSMutableDictionary *authenticationCopy = [authentication mutableCopy];
+		authenticationCopy[ @"channel" ] = self.name;
+		dictionary = [authenticationCopy copy];
 	} else {
 		dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
 					  self.name, @"channel",

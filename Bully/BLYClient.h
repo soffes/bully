@@ -32,6 +32,7 @@ extern NSString *const BLYClientErrorDomain;
 // Initializer
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate;
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName;
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName connectAutomatically:(BOOL)connectAutomatically;
 
 // Subscribing
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName;
@@ -39,6 +40,7 @@ extern NSString *const BLYClientErrorDomain;
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock errorBlock:(BLYErrorBlock)errorBlock;
 
 // Unsubscribe all
+- (void)unsubscribeChannelWithName:(NSString *)channelName;
 - (void)unsubscribeAll;
 
 // Managing the Connection
@@ -57,5 +59,6 @@ extern NSString *const BLYClientErrorDomain;
 - (void)bullyClient:(BLYClient *)client didReceiveError:(NSError *)error;
 - (void)bullyClientDidDisconnect:(BLYClient *)client __attribute__((deprecated("Use bullyClient:didDisconnectWithError instead")));
 - (void)bullyClient:(BLYClient *)client didDisconnectWithError:(NSError *)error;
+- (void)bullyClient:(BLYClient *)client didJoinChannel:(BLYChannel *)channel;
 
 @end

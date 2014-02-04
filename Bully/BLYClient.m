@@ -18,6 +18,10 @@
 
 NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
+@interface BLYClient ()
+@property (nonatomic, strong) NSTimer *pingTimer;
+@end
+
 @implementation BLYClient {
 	Reachability *_reachability;
 
@@ -82,6 +86,10 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 }
 
 - (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName {
+	return [self initWithAppKey:appKey delegate:delegate hostName:hostName connectAutomatically:YES];
+}
+
+- (id)initWithAppKey:(NSString *)appKey delegate:(id<BLYClientDelegate>)delegate hostName:(NSString *)hostName connectAutomatically:(BOOL)connectAutomatically {
     if ((self = [super init])) {
 		self.appKey = appKey;
 		self.delegate = delegate;
@@ -115,7 +123,9 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 		[notificationCenter addObserver:self selector:@selector(_reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
 		// Connect!
-		[self connect];
+		if (connectAutomatically) {
+			[self connect];
+		}
 	}
 	return self;
 }
@@ -135,6 +145,7 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 - (BLYChannel *)subscribeToChannelWithName:(NSString *)channelName authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock errorBlock:(BLYErrorBlock)errorBlock {
     BLYChannel *channel = [_connectedChannels objectForKey:channelName];
 	if (channel) {
+		[channel _subscribe];
 		return channel;
 	}
 
@@ -147,6 +158,12 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 
 #pragma mark - Unsubscribe all
+
+- (void)unsubscribeChannelWithName:(NSString *)channelName
+{
+	BLYChannel *channel = self.connectedChannels[ channelName ];
+	[channel unsubscribe];
+}
 
 - (void)unsubscribeAll {
     NSArray *channels = [_connectedChannels allValues];
@@ -296,7 +313,7 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 	_appIsBackgrounded = NO;
 
-	if (_automaticallyDisconnectInBackground) {
+	if (_automaticallyDisconnectInBackground && _automaticallyReconnect) {
 		[self connect];
 	}
 }
@@ -304,6 +321,11 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 
 - (void)_reachabilityChanged:(NSNotification *)notification {
+	// user didn't ask for automatic reconnection
+	if (!_automaticallyReconnect) {
+		return;
+	}
+	
 #if TARGET_OS_IPHONE
 	// If the app is in the background, ignore the notificaiton
 	if (_appIsBackgrounded) {
@@ -320,15 +342,40 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 	}
 }
 
+- (void)_pingTimerHandler:(NSTimer *)sender {
+	[self _sendEvent:@"pusher:ping"
+		  dictionary:@{}];
+}
 
 #pragma mark - SRWebSocketDelegate
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)messageString {
+	// according to http://pusher.com/docs/pusher_protocol#recommendations-for-client-libraries
+	// we will send ping every 120s after last activity
+	// considering that connection should result in a message containing
+	// socket id, we won't initialize timer in -[SRWebSocketDelegate webSocketDidOpen:]
+	// we will disable timer in -[SRWebSocketDelegate webSocket:didCloseWithCode:reason:wasClean:]
+	[self.pingTimer invalidate];
+	self.pingTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self
+													selector:@selector(_pingTimerHandler:)
+													userInfo:nil
+													 repeats:YES];
+	
 	NSData *messageData = [(NSString *)messageString dataUsingEncoding:NSUTF8StringEncoding];
 	NSDictionary *message = [NSJSONSerialization JSONObjectWithData:messageData options:NSJSONReadingAllowFragments error:nil];
 
 	// Get event out of Pusher message
 	NSString *eventName = [message objectForKey:@"event"];
+	// Ping - pong
+	if ([eventName isEqualToString:@"pusher:ping"]) {
+		[self _sendEvent:@"pusher:pong"
+			  dictionary:@{}];
+		return;
+	} else if ([eventName isEqualToString:@"pusher:pong"]) {
+		// no-op
+		return;
+	}
+	
 	id eventMessage = [message objectForKey:@"data"];
 	NSError *jsonError = nil;
     NSData *eventMessageData = nil;
@@ -346,15 +393,22 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 		[self _reconnectChannels];
 		return;
 	}
-
+	
 	// Check for channel events
 	NSString *channelName = [message objectForKey:@"channel"];
 	if (channelName) {
 		// Find channel
 		BLYChannel *channel = [self.connectedChannels objectForKey:channelName];
-
+		
 		// Ensure the user is subscribed to the channel
 		if (channel) {
+			if ([eventName isEqualToString:@"pusher_internal:subscription_succeeded"]) {
+				// connected to the channel
+				if ([self.delegate respondsToSelector:@selector(bullyClient:didJoinChannel:)]) {
+					[self.delegate bullyClient:self didJoinChannel:channel];
+				}
+				return;
+			}
 
             if (jsonError != nil && channel.errorBlock != nil) {
                 channel.errorBlock(jsonError, BLYErrorTypeJSONParser);
@@ -407,6 +461,10 @@ NSString *const BLYClientErrorDomain = @"BLYClientErrorDomain";
 
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
+	// Terminating ping
+	[self.pingTimer invalidate];
+	self.pingTimer = nil;
+	
 	// Check for error codes based on the Pusher Websocket protocol
 	// See http://pusher.com/docs/pusher_protocol
 	// Protocol >= 6 also exposes a human-readable reason why the disconnect happened
