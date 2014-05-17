@@ -1,9 +1,9 @@
 //
-//  BLYChannelPrivate.h
+//  BLYEvent.h
 //  Bully
 //
-//  Created by Sam Soffes on 6/2/12.
-//  Copyright (c) 2012-2014 Sam Soffes. All rights reserved.
+//  Created by Richard Heard on 17/05/2014.
+//  Copyright (c) 2014 Richard Heard. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -25,19 +25,10 @@
 //  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "BLYChannel.h"
+#import "BLYEvent.h"
 
-@class BLYClient;
+@interface BLYEvent ()
 
-@interface BLYChannel ()
-
-@property (nonatomic, weak, readwrite) BLYClient *client;
-@property (nonatomic, strong, readwrite) NSString *name;
-@property (nonatomic, strong) NSMutableDictionary *subscriptions;
-
-- (id)_initWithName:(NSString *)name client:(BLYClient *)client authenticationBlock:(BLYChannelAuthenticationBlock)authenticationBlock;
-- (void)_subscribe;
-
-- (void)_dispatchEvent:(BLYEvent*)event;
+- (instancetype)_initWithRawEventDictionary:(NSDictionary *)dict andClient:(BLYClient *)client;
 
 @end

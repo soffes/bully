@@ -1,9 +1,9 @@
 //
-//  BLYChannel
+//  BLYEvent.h
 //  Bully
 //
-//  Created by Sam Soffes on 6/1/12.
-//  Copyright (c) 2012-2014 Sam Soffes. All rights reserved.
+//  Created by Richard Heard on 17/05/2014.
+//  Copyright (c) 2014 Richard Heard. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -27,38 +27,18 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const BLYChannelReceivedEventNotification;
-
-@class BLYClient;
 @class BLYChannel;
-@class BLYEvent;
+@class BLYClient;
 
-typedef void (^BLYChannelEventBlock)(BLYEvent *event);
-typedef void (^BLYChannelAuthenticationBlock)(BLYChannel *channel);
-
-typedef enum {
-    BLYErrorTypeUnknown = 0,
-    BLYErrorTypeJSONParser = 1
-} BLYErrorType;
-
-typedef void (^BLYErrorBlock)(NSError *error, BLYErrorType errorType);
-
-@interface BLYChannel : NSObject
-
+@interface BLYEvent : NSObject
 @property (nonatomic, strong, readonly) NSString *name;
-@property (nonatomic, weak, readonly) BLYClient *client;
-@property (nonatomic, copy) BLYChannelAuthenticationBlock authenticationBlock;
-@property (nonatomic, strong, readonly) NSDictionary *authenticationParameters;
-@property (nonatomic, strong, readonly) NSData *authenticationParametersData;
-@property (nonatomic, copy) BLYErrorBlock errorBlock;
+@property (nonatomic, strong, readonly) NSString *channelName;
+@property (nonatomic, strong, readonly) id message;
+@property (nonatomic, strong, readonly) NSError *messageDeserializationError;
 
-- (BOOL)isPrivate;
-- (BOOL)isPresence;
+@property (nonatomic, strong, readonly) NSDictionary *rawEvent;
 
-- (void)bindToEvent:(NSString *)eventName block:(BLYChannelEventBlock)block;
-- (void)unbindEvent:(NSString *)eventName;
-
-- (void)subscribeWithAuthentication:(NSDictionary *)authentication;
-- (void)unsubscribe;
+@property (nonatomic, strong, readonly) BLYChannel *channel;
+@property (nonatomic, strong, readonly) BLYClient *client;
 
 @end
