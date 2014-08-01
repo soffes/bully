@@ -7,7 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		21396B9D177299360040FCA2 /* libSocketRocketOSXLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21396B9C177299330040FCA2 /* libSocketRocketOSXLibrary.a */; };
+		13EDFC9F19280F490077AC97 /* BLYEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 13EDFC9A19280F490077AC97 /* BLYEvent.h */; };
+		13EDFCA019280F490077AC97 /* BLYEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 13EDFC9A19280F490077AC97 /* BLYEvent.h */; };
+		13EDFCA119280F490077AC97 /* BLYEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 13EDFC9B19280F490077AC97 /* BLYEvent.m */; };
+		13EDFCA219280F490077AC97 /* BLYEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 13EDFC9B19280F490077AC97 /* BLYEvent.m */; };
+		13EDFCA319280F490077AC97 /* BLYEventPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 13EDFC9C19280F490077AC97 /* BLYEventPrivate.h */; };
+		13EDFCA419280F490077AC97 /* BLYEventPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 13EDFC9C19280F490077AC97 /* BLYEventPrivate.h */; };
+		13EDFCA519280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 13EDFC9D19280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.h */; };
+		13EDFCA619280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 13EDFC9D19280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.h */; };
+		13EDFCA719280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 13EDFC9E19280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.m */; };
+		13EDFCA819280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 13EDFC9E19280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.m */; };
 		21396B9E177299470040FCA2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B256430C160285C500586711 /* Reachability.m */; };
 		B2215B7B15DC19FB00DD59C1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2215B7A15DC19FB00DD59C1 /* Security.framework */; };
 		B2215B7D15DC19FF00DD59C1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2215B7C15DC19FF00DD59C1 /* Cocoa.framework */; };
@@ -33,20 +42,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		21396B95177299330040FCA2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = B2EB6A7215DB5C800035AD92;
-			remoteInfo = SocketRocketOSXLibrary;
-		};
-		21396B9B177299330040FCA2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B2EB6A7315DB5C800035AD92;
-			remoteInfo = SocketRocketOSXLibrary;
-		};
 		21924D7B16B7A68400C7AC44 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B2587F0D1579E798009D7B44 /* SocketRocket.xcodeproj */;
@@ -85,6 +80,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		13EDFC9A19280F490077AC97 /* BLYEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLYEvent.h; sourceTree = "<group>"; };
+		13EDFC9B19280F490077AC97 /* BLYEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLYEvent.m; sourceTree = "<group>"; };
+		13EDFC9C19280F490077AC97 /* BLYEventPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLYEventPrivate.h; sourceTree = "<group>"; };
+		13EDFC9D19280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+BLYWeakTimerAdditions.h"; sourceTree = "<group>"; };
+		13EDFC9E19280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+BLYWeakTimerAdditions.m"; sourceTree = "<group>"; };
 		B2215B7A15DC19FB00DD59C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		B2215B7C15DC19FF00DD59C1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		B256430B160285C500586711 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -119,7 +119,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21396B9D177299360040FCA2 /* libSocketRocketOSXLibrary.a in Frameworks */,
 				B2215B7D15DC19FF00DD59C1 /* Cocoa.framework in Frameworks */,
 				B2215B7B15DC19FB00DD59C1 /* Security.framework in Frameworks */,
 			);
@@ -192,7 +191,6 @@
 				B2587F621579E798009D7B44 /* SocketRocket.framework */,
 				B2587F641579E798009D7B44 /* SRWebSocketTests.octest */,
 				B2587F661579E798009D7B44 /* TestChat.app */,
-				21396B9C177299330040FCA2 /* libSocketRocketOSXLibrary.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -207,6 +205,11 @@
 				B2587F731579E8B4009D7B44 /* BLYChannel.h */,
 				B2587F741579E8B4009D7B44 /* BLYChannel.m */,
 				B2587F79157A852C009D7B44 /* BLYChannelPrivate.h */,
+				13EDFC9A19280F490077AC97 /* BLYEvent.h */,
+				13EDFC9B19280F490077AC97 /* BLYEvent.m */,
+				13EDFC9C19280F490077AC97 /* BLYEventPrivate.h */,
+				13EDFC9D19280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.h */,
+				13EDFC9E19280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.m */,
 			);
 			path = Bully;
 			sourceTree = "<group>";
@@ -226,12 +229,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13EDFCA519280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.h in Headers */,
 				B2587F711579E8AC009D7B44 /* BLYClient.h in Headers */,
 				B2587F751579E8B4009D7B44 /* BLYChannel.h in Headers */,
 				B2FB4894158AFA230067FB00 /* Bully.h in Headers */,
+				13EDFCA319280F490077AC97 /* BLYEventPrivate.h in Headers */,
 				B2FB4895158AFA230067FB00 /* BLYClientPrivate.h in Headers */,
 				B2FB4896158AFA230067FB00 /* BLYChannelPrivate.h in Headers */,
 				B2564321160285C500586711 /* Reachability.h in Headers */,
+				13EDFC9F19280F490077AC97 /* BLYEvent.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,10 +246,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B294D25215DB6BA900F8D8D7 /* Bully.h in Headers */,
+				13EDFCA619280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.h in Headers */,
+				13EDFCA019280F490077AC97 /* BLYEvent.h in Headers */,
 				B294D25315DB6BA900F8D8D7 /* BLYClient.h in Headers */,
 				B294D25515DB6BA900F8D8D7 /* BLYChannel.h in Headers */,
 				B294D25715DB6BA900F8D8D7 /* BLYClientPrivate.h in Headers */,
 				B294D25815DB6BA900F8D8D7 /* BLYChannelPrivate.h in Headers */,
+				13EDFCA419280F490077AC97 /* BLYEventPrivate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,7 +288,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				21396B96177299330040FCA2 /* PBXTargetDependency */,
 			);
 			name = BullyMac;
 			productName = BullyMacLibrary;
@@ -320,13 +328,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		21396B9C177299330040FCA2 /* libSocketRocketOSXLibrary.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSocketRocketOSXLibrary.a;
-			remoteRef = 21396B9B177299330040FCA2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		B2587F601579E798009D7B44 /* libSocketRocket.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -364,7 +365,9 @@
 			files = (
 				B2587F721579E8AC009D7B44 /* BLYClient.m in Sources */,
 				B2587F761579E8B4009D7B44 /* BLYChannel.m in Sources */,
+				13EDFCA119280F490077AC97 /* BLYEvent.m in Sources */,
 				B2564322160285C500586711 /* Reachability.m in Sources */,
+				13EDFCA719280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,18 +377,15 @@
 			files = (
 				B294D25415DB6BA900F8D8D7 /* BLYClient.m in Sources */,
 				21396B9E177299470040FCA2 /* Reachability.m in Sources */,
+				13EDFCA219280F490077AC97 /* BLYEvent.m in Sources */,
 				B294D25615DB6BA900F8D8D7 /* BLYChannel.m in Sources */,
+				13EDFCA819280F490077AC97 /* NSTimer+BLYWeakTimerAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		21396B96177299330040FCA2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SocketRocketOSXLibrary;
-			targetProxy = 21396B95177299330040FCA2 /* PBXContainerItemProxy */;
-		};
 		21924D7C16B7A68400C7AC44 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SocketRocket;
